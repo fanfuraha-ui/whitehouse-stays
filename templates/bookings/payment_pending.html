@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block head %}<meta http-equiv="refresh" content="8">{% endblock %}
+{% block content %}
+<section class="wrap section narrow">
+  <h1>Waiting for your payment…</h1>
+  <p>If you're paying by M-Pesa, enter your PIN on the prompt on your phone. This page refreshes automatically.</p>
+  <p>Reference <strong>{{ booking.reference }}</strong> · Need help? Call {{ BRAND.phones.0 }}.</p>
+</section>
+{% endblock %}

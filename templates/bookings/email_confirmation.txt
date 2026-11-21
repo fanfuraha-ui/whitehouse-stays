@@ -1,0 +1,19 @@
+{% autoescape off %}Hi {{ booking.guest.full_name }},
+
+Your stay at {{ BRAND.name }} is confirmed. Karibu!
+
+Reference:  {{ booking.reference }}
+Apartment:  {{ booking.unit_type.name }}
+Branch:     {{ booking.branch.name }}{% if booking.branch.landmark %} ({{ booking.branch.landmark }}){% endif %}
+Check-in:   {{ booking.check_in|date:"l j F Y" }}, from {{ booking.branch.check_in_time|time:"g:i A" }}
+Check-out:  {{ booking.check_out|date:"l j F Y" }}, by {{ booking.branch.check_out_time|time:"g:i A" }}
+Guests:     {{ booking.guests }}
+Total:      Ksh {{ booking.total_amount|floatformat:0 }}
+
+Directions: {{ booking.branch.directions_url }}
+
+Your invoice is attached. Questions? Call {{ BRAND.phones|join:" / " }} or WhatsApp https://wa.me/{{ BRAND.whatsapp }}
+
+{{ BRAND.tagline }}
+{{ BRAND.name }} — {{ BRAND.promise }}
+{% endautoescape %}

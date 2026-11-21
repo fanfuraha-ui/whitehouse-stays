@@ -1,0 +1,63 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ BRAND.name }} — {{ BRAND.tagline }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}Comfortable 1, 2 and 3-bedroom apartments in Migori and Kisumu. Book direct with M-Pesa or card.{% endblock %}">
+  <meta name="theme-color" content="#0d2557">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a href="{% url 'properties:home' %}" class="logo" aria-label="{{ BRAND.name }} home">
+        <svg viewBox="0 0 48 40" width="40" height="34" aria-hidden="true">
+          <path d="M4 18 24 3l20 15" fill="none" stroke="#c99a2e" stroke-width="4" stroke-linecap="round"/>
+          <rect x="11" y="22" width="26" height="12" rx="2" fill="#fff"/>
+          <rect x="11" y="18" width="8" height="5" rx="1.5" fill="#fff"/>
+        </svg>
+        <span><strong>WHITEHOUSE</strong><em>AIRBNB</em></span>
+      </a>
+      <nav class="nav">
+        {% for b in nav_branches %}<a href="{% url 'properties:branch' b.slug %}">{{ b.name }}</a>{% endfor %}
+      </nav>
+      <a class="btn btn-gold btn-sm" href="{% url 'properties:home' %}#book">Book Now</a>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="wrap">{% for m in messages %}<p class="flash flash-{{ m.tags }}">{{ m }}</p>{% endfor %}</div>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="script gold">Thank you for choosing</p>
+        <p class="footer-brand">{{ BRAND.name|upper }}</p>
+        <p class="script">{{ BRAND.promise }}</p>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        {% for p in BRAND.phones %}<a class="footer-link" href="tel:{{ p }}">{{ p }}</a>{% endfor %}
+        <a class="footer-link" href="https://wa.me/{{ BRAND.whatsapp }}">WhatsApp us</a>
+      </div>
+      <div>
+        <h3>Our branches</h3>
+        {% for b in nav_branches %}<a class="footer-link" href="{% url 'properties:branch' b.slug %}">{{ b.name }}</a>{% endfor %}
+      </div>
+    </div>
+    <p class="wrap small">© {% now "Y" %} {{ BRAND.name }}</p>
+  </footer>
+
+  <a class="whatsapp-fab" href="https://wa.me/{{ BRAND.whatsapp }}" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.4-.7a11.6 11.6 0 0 1-4.6-4.1c-.3-.5-1-1.5-1-2.8s.7-2 1-2.3c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6a8.3 8.3 0 0 0 1.5 1.9 7.6 7.6 0 0 0 2.2 1.3c.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.4.1.1.1.7-.1 1.2Z"/></svg>
+  </a>
+</body>
+</html>

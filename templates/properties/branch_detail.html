@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}{{ branch.name }} apartments — {{ BRAND.name }}{% endblock %}
+{% block description %}1, 2 and 3-bedroom apartments in {{ branch.town }}{% if branch.landmark %}, {{ branch.landmark|lower }}{% endif %}. Book direct with M-Pesa or card.{% endblock %}
+{% block head %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LodgingBusiness","name":"{{ BRAND.name }} {{ branch.name|escapejs }}",
+ "telephone":"{{ BRAND.phones.0 }}","address":{"@type":"PostalAddress","addressLocality":"{{ branch.town|escapejs }}","addressCountry":"KE","streetAddress":"{{ branch.landmark|escapejs }}"},
+ "geo":{"@type":"GeoCoordinates","latitude":{{ branch.latitude }},"longitude":{{ branch.longitude }}},
+ "url":"{{ request.build_absolute_uri }}","priceRange":"KES"}
+</script>
+{% endblock %}
+{% block content %}
+<section class="hero hero-sm">
+  <div class="wrap hero-inner">
+    <p class="script gold hero-tagline">{{ BRAND.tagline }}</p>
+    <h1>{{ branch.name }}</h1>
+    {% if branch.landmark %}<p class="lead">{{ branch.landmark }}</p>{% endif %}
+    <a class="link-light" href="{{ branch.directions_url }}" target="_blank" rel="noopener">Get directions →</a>
+
+    <form class="search-card" method="get">
+      <label>Check-in {{ form.check_in }}</label>
+      <label>Check-out {{ form.check_out }}</label>
+      <label>Guests {{ form.guests }}</label>
+      <button class="btn btn-gold" type="submit">Check availability</button>
+      {% if form.non_field_errors %}<p class="error full">{{ form.non_field_errors.0 }}</p>{% endif %}
+    </form>
+  </div>
+</section>
+
+<section class="wrap section">
+  {% if branch.intro %}<p class="intro">{{ branch.intro }}</p>{% endif %}
+  <div class="units">
+    {% for o in options %}{% with ut=o.unit_type %}
+    <article class="unit">
+      {% with photo=ut.photos.all.0 %}
+      {% if photo %}<img src="{{ photo.image.url }}" alt="{{ ut.name }}, {{ branch.name }}" loading="lazy" width="640" height="400">
+      {% else %}<div class="card-ph" aria-hidden="true"></div>{% endif %}
+      {% endwith %}
+      <div class="unit-body">
+        <h2>{{ ut.name }}</h2>
+        <p class="muted">Sleeps {{ ut.max_guests }} · {{ ut.get_bedrooms_display }}{% if ut.min_nights > 1 %} · min {{ ut.min_nights }} nights{% endif %}</p>
+        {% if ut.amenities.all %}<ul class="chips">{% for a in ut.amenities.all %}<li>{{ a }}</li>{% endfor %}</ul>{% endif %}
+
+        {% if searched %}
+          {% if o.quote and o.available %}
+            <p class="price"><strong>Ksh {{ o.quote.total|floatformat:0|intcomma }}</strong> for {{ o.quote.nights }} night{{ o.quote.nights|pluralize }}</p>
+            {% if o.available <= 2 %}<p class="urgent">Only {{ o.available }} left</p>{% endif %}
+            <a class="btn btn-navy" href="{% url 'bookings:checkout' ut.pk %}?{{ request.GET.urlencode }}">Book this</a>
+          {% else %}
+            <p class="unavailable">{{ o.reason }}</p>
+          {% endif %}
+        {% else %}
+          <p class="price">From <strong>Ksh {{ ut.base_rate|floatformat:0|intcomma }}</strong> / night</p>
+          <p class="muted small">Pick your dates above to see availability.</p>
+        {% endif %}
+      </div>
+    </article>
+    {% endwith %}{% empty %}
+    <p>Rooms for this branch are being added. Call {{ BRAND.phones.0 }} to book.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Complete your booking — {{ BRAND.name }}{% endblock %}
+{% block content %}
+<section class="wrap section checkout">
+  <div class="summary">
+    <h1>Your stay</h1>
+    <p><strong>{{ unit_type.name }}</strong><br>{{ branch.name }}{% if branch.landmark %} · {{ branch.landmark }}{% endif %}</p>
+    <p>{{ dates.check_in|date:"D j M" }} → {{ dates.check_out|date:"D j M Y" }}<br>
+       {{ quote.nights }} night{{ quote.nights|pluralize }} · {{ dates.guests }} guest{{ dates.guests|pluralize }}</p>
+    <table class="lines">
+      {% for line in quote.lines %}
+      <tr><td>{{ line.label }} · {{ line.nights }} × Ksh {{ line.rate|floatformat:0|intcomma }}</td>
+          <td class="num">{{ line.amount|floatformat:0|intcomma }}</td></tr>
+      {% endfor %}
+      {% if quote.tax %}<tr><td>Taxes</td><td class="num">{{ quote.tax|floatformat:0|intcomma }}</td></tr>{% endif %}
+      <tr class="total"><td>Total (Ksh)</td><td class="num">{{ quote.total|floatformat:0|intcomma }}</td></tr>
+    </table>
+    <p class="muted small">Check-in from {{ branch.check_in_time|time:"g:i A" }} · Check-out by {{ branch.check_out_time|time:"g:i A" }}</p>
+  </div>
+
+  <form method="post" class="guest-form" novalidate>
+    {% csrf_token %}
+    <h2>Your details</h2>
+    {% for field in form %}
+      <label class="{% if field.field.widget.input_type == 'checkbox' %}check{% endif %}">
+        {% if field.field.widget.input_type == 'checkbox' %}{{ field }} {{ field.label }}{% else %}{{ field.label }} {{ field }}{% endif %}
+        {% if field.help_text %}<span class="hint">{{ field.help_text }}</span>{% endif %}
+        {% for e in field.errors %}<span class="error">{{ e }}</span>{% endfor %}
+      </label>
+    {% endfor %}
+    <button class="btn btn-gold btn-block" type="submit">Pay Ksh {{ quote.total|floatformat:0|intcomma }} — M-Pesa or card</button>
+    <p class="muted small">Your unit is held for 15 minutes while you pay. Secure checkout by Paystack.</p>
+  </form>
+</section>
+{% endblock %}

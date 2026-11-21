@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="script gold hero-tagline">{{ BRAND.tagline }}</p>
+    <h1>Serviced apartments in Migori &amp; Kisumu</h1>
+    <p class="lead">1, 2 and 3-bedroom homes. Book direct, pay with M-Pesa or card, and get your confirmation instantly.</p>
+
+    <form id="book" class="search-card" method="get" action="" onsubmit="this.action='/stays/'+this.branch.value+'/'">
+      <label>Branch
+        <select name="branch" required>
+          {% for b in branches %}<option value="{{ b.slug }}">{{ b.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Check-in {{ form.check_in }}</label>
+      <label>Check-out {{ form.check_out }}</label>
+      <label>Guests {{ form.guests }}</label>
+      <button class="btn btn-gold" type="submit">Check availability</button>
+    </form>
+  </div>
+</section>
+
+<section class="wrap section">
+  <h2 class="section-title">Our branches</h2>
+  <div class="cards">
+    {% for b in branches %}
+    <a class="card" href="{{ b.get_absolute_url }}">
+      {% if b.hero_image %}<img src="{{ b.hero_image.url }}" alt="{{ b.name }} apartments" loading="lazy" width="640" height="400">
+      {% else %}<div class="card-ph" aria-hidden="true"></div>{% endif %}
+      <div class="card-body">
+        <h3>{{ b.name }}</h3>
+        {% if b.landmark %}<p class="muted">{{ b.landmark }}</p>{% endif %}
+        {% if b.from_rate %}<p class="price">From <strong>Ksh {{ b.from_rate|floatformat:0|intcomma }}</strong> / night</p>{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap perks">
+    <div><strong>Pay your way</strong><span>M-Pesa or Visa / Mastercard</span></div>
+    <div><strong>Instant confirmation</strong><span>Receipt and invoice by email</span></div>
+    <div><strong>Talk to a person</strong><span>Call or WhatsApp {{ BRAND.phones.0 }}</span></div>
+  </div>
+</section>
+{% endblock %}

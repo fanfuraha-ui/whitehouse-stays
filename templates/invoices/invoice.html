@@ -1,0 +1,80 @@
+{% load humanize %}<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; color: #0d2557; margin: 0; font-size: 10.5pt; }
+  .top { padding: 28px 36px 18px; border-bottom: 6px solid #c99a2e; }
+  .brand { font-size: 26pt; font-weight: 800; letter-spacing: .5px; line-height: 1; }
+  .brand span { color: #c99a2e; display: block; font-size: 20pt; }
+  .tag { font-style: italic; margin-top: 6px; }
+  .bar { background: #0d2557; color: #fff; padding: 10px 36px; display: flex; justify-content: space-between; font-size: 9.5pt; }
+  .bar b { color: #e0b84a; }
+  .title { text-align: center; margin: 22px 0 14px; }
+  .title span { background: #0d2557; color: #fff; padding: 6px 40px; border-radius: 10px; font-size: 20pt; font-weight: 800; letter-spacing: 2px; }
+  .meta { display: flex; justify-content: space-between; padding: 0 36px; }
+  .client p, .box p { margin: 4px 0; }
+  .box { background: #dbe8fb; border-radius: 10px; padding: 10px 16px; min-width: 230px; }
+  table { width: calc(100% - 72px); margin: 18px 36px 0; border-collapse: collapse; }
+  th { background: #0d2557; color: #fff; padding: 8px; font-size: 9.5pt; }
+  td { border: 1px solid #0d2557; padding: 7px 8px; vertical-align: top; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  .totals { width: 300px; margin: 0 36px 0 auto; }
+  .totals td:first-child { font-weight: 700; }
+  .totals tr.grand td { background: #0d2557; color: #fff; }
+  .thanks { padding: 26px 36px 0; }
+  .thanks .script { font-style: italic; font-size: 16pt; }
+  .thanks .name { font-size: 20pt; font-weight: 800; }
+  .foot { position: absolute; bottom: 0; left: 0; right: 0; background: #0d2557; color: #fff; padding: 12px 36px; border-top: 6px solid #c99a2e; font-size: 9pt; }
+  .paid { color: #1a7f37; font-weight: 700; }
+</style></head>
+<body>
+  <div class="top">
+    <div class="brand">WHITEHOUSE<span>AIRBNB</span></div>
+    <div class="tag">{{ BRAND.tagline }}</div>
+  </div>
+  <div class="bar">
+    <div><b>Contact:</b> {{ BRAND.phones|join:" / " }}</div>
+    <div><b>Location:</b> {{ booking.branch.name }}{% if booking.branch.landmark %} — {{ booking.branch.landmark }}{% endif %}</div>
+  </div>
+
+  <div class="title"><span>INVOICE</span></div>
+
+  <div class="meta">
+    <div class="client">
+      <p><b>Client Name:</b> {{ guest.full_name|default:"—" }}</p>
+      <p><b>Address:</b> {{ guest.address|default:"—" }}</p>
+      <p><b>Phone:</b> {{ guest.phone|default:"—" }}</p>
+    </div>
+    <div class="box">
+      <p><b>Invoice No.:</b> {{ invoice.number }}</p>
+      <p><b>Date:</b> {{ invoice.issued_on|date:"d/m/Y" }}</p>
+      <p><b>Due Date:</b> {{ invoice.due_on|date:"d/m/Y" }}</p>
+      <p><b>Booking:</b> {{ booking.reference }}</p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>No.</th><th>Description</th><th>Qty</th><th class="num">Unit Price (Ksh)</th><th class="num">Amount (Ksh)</th></tr></thead>
+    <tbody>
+      {% for r in rows %}
+      <tr><td>{{ r.no }}</td><td>{{ r.description }}</td><td>{{ r.qty }} night{{ r.qty|pluralize }}</td>
+          <td class="num">{{ r.unit_price|floatformat:2|intcomma }}</td><td class="num">{{ r.amount|floatformat:2|intcomma }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table class="totals">
+    <tr><td>Sub Total (Ksh)</td><td class="num">{{ invoice.subtotal|floatformat:2|intcomma }}</td></tr>
+    <tr><td>Taxes (if any)</td><td class="num">{{ invoice.tax|floatformat:2|intcomma }}</td></tr>
+    <tr class="grand"><td>Total Amount (Ksh)</td><td class="num">{{ invoice.total|floatformat:2|intcomma }}</td></tr>
+    {% if amount_paid %}<tr><td>Paid</td><td class="num paid">{{ amount_paid|floatformat:2|intcomma }}</td></tr>{% endif %}
+  </table>
+
+  <div class="thanks">
+    <div class="script">Thank you for choosing</div>
+    <div class="name">WHITEHOUSE AIRBNB</div>
+    <div class="script">{{ BRAND.promise }}</div>
+  </div>
+
+  <div class="foot">{{ booking.branch.name }}{% if booking.branch.landmark %} — {{ booking.branch.landmark }}{% endif %} · Book direct: {{ BRAND.phones.0 }}</div>
+</body></html>
