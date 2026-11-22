@@ -434,63 +434,88 @@ html.cal-lock{overflow:hidden}
 .bcard:hover .more svg{transform:translateX(3px)}
 .acard{cursor:pointer}
 .acard:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
-.pop{border:0;padding:0;margin:auto;width:min(980px,calc(100vw - 24px));height:min(660px,calc(100dvh - 24px));overflow:hidden;border-radius:30px;color:#fff;background:linear-gradient(180deg,#0f2552,#071531);border:1px solid rgba(212,176,106,.4);box-shadow:0 70px 140px -30px rgba(2,8,24,.85)}
-.pop::backdrop{background:rgba(5,13,32,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.pop[open]{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);animation:popIn .55s var(--ease)}
-@keyframes popIn{from{opacity:0;transform:translateY(26px) scale(.965)}}
-.pop-media{position:relative;overflow:hidden;background:var(--navy-2)}
-.pop-media picture,.pop-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.pop[open] .pop-media img{animation:kb 14s var(--ease) forwards}
-@keyframes kb{from{transform:scale(1.14)}to{transform:scale(1)}}
-.pop-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,21,49,.35),transparent 30%,transparent 55%,rgba(7,21,49,.85)),linear-gradient(90deg,transparent 70%,rgba(7,21,49,.55))}
-.pop-media .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.75);background:radial-gradient(circle at 30% 20%,var(--navy-3),var(--navy) 70%)}
-.pop-chip{position:absolute;left:20px;top:20px;z-index:2;background:rgba(255,255,255,.94);color:var(--navy);font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;padding:8px 14px;border-radius:999px}
-.pop-strip{position:absolute;left:20px;right:20px;bottom:20px;z-index:2;display:flex;gap:8px;align-items:center}
-.pop-strip a{flex:none;width:64px;height:48px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.4);opacity:.9;transition:transform .35s var(--ease),border-color .25s}
-.pop-strip a:hover{transform:translateY(-4px);border-color:var(--gold)}
-.pop-strip a picture,.pop-strip a img{position:static;width:100%;height:100%;object-fit:cover;display:block}
-.pop-strip em{margin-left:auto;font:italic 500 17px var(--serif);color:#fff;text-decoration:none;white-space:nowrap}
-.pop-body{position:relative;display:flex;flex-direction:column;min-height:0;padding:0}
-.pop-body::before{content:"";position:absolute;left:36px;right:36px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.pop-scroll{flex:1;overflow:auto;padding:38px clamp(22px,4vw,40px) 10px;scrollbar-width:thin;scrollbar-color:rgba(212,176,106,.4) transparent}
-.pop-scroll>*{animation:rise .6s var(--ease) both}
-.pop-scroll>:nth-child(2){animation-delay:.07s}.pop-scroll>:nth-child(3){animation-delay:.14s}.pop-scroll>:nth-child(4){animation-delay:.21s}.pop-scroll>:nth-child(5){animation-delay:.28s}.pop-scroll>:nth-child(6){animation-delay:.35s}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}}
-.pop .eyebrow{color:var(--gold)}
-.pop h3{color:#fff;font-size:clamp(34px,4.4vw,50px);margin:10px 0 14px}
-.pop h3 em{color:var(--gold);font-style:italic}
-.pop-loc{display:flex;gap:10px;align-items:flex-start;color:rgba(255,255,255,.78);font-size:15.5px;line-height:1.55}
-.pop-loc svg{color:var(--gold);margin-top:3px}
-.pop-lead{color:rgba(255,255,255,.8);font-size:16.5px;max-width:46ch;margin:0}
-.pop-num{display:flex;align-items:center;gap:16px;margin:0 0 6px}
-.pop-num i{font:500 70px/1 var(--serif);font-style:normal;background:linear-gradient(135deg,#f3dba6,#c79c52);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pop-num span{font:700 11px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.65);line-height:1.6}
-.pop-h{display:flex;align-items:center;gap:14px;margin:26px 0 14px;font:700 11px var(--sans);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-.pop-h::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.14)}
-.pop-am{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0;padding:0;list-style:none}
-.pop-am li{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:600;color:#fff;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);transition:border-color .25s,background .25s}
-.pop-am li:hover{border-color:rgba(212,176,106,.5);background:rgba(212,176,106,.08)}
-.pop-am svg{color:var(--gold);width:19px;height:19px}
+.pop{border:0;padding:0;margin:auto;width:min(1080px,calc(100vw - 24px));height:min(700px,calc(100dvh - 24px));overflow:hidden;border-radius:34px;background:var(--ivory);color:var(--ink);box-shadow:0 90px 180px -30px rgba(2,8,24,.95),0 0 0 1px rgba(212,176,106,.55)}
+.pop::backdrop{background:radial-gradient(70% 60% at 50% 35%,rgba(22,46,104,.72),rgba(4,10,26,.9));backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.pop[open]{display:grid;grid-template-columns:minmax(0,1.14fr) minmax(0,1fr);animation:popIn .75s var(--ease)}
+@keyframes popIn{from{opacity:0;transform:translateY(40px) scale(.94);filter:blur(10px)}}
+.pop-media{position:relative;overflow:hidden;background:var(--night);isolation:isolate}
+.sl{position:absolute;inset:0;opacity:0;transition:opacity 1.2s var(--ease)}
+.sl.on{opacity:1}
+.sl picture,.sl img{display:block;width:100%;height:100%;object-fit:cover}
+.sl.on img{animation:kb 10s linear forwards}
+@keyframes kb{from{transform:scale(1.13) translate(1.5%,1%)}to{transform:scale(1)}}
+.pop-media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(5,13,32,.5) 0%,transparent 26%,transparent 38%,rgba(5,13,32,.88) 100%)}
+.pop-media .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.8);background:radial-gradient(circle at 30% 20%,var(--navy-3),var(--navy) 70%)}
+.pop-chip{position:absolute;left:26px;top:26px;z-index:3;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font:700 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;padding:9px 16px;border-radius:999px}
+.pop-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(212,176,106,.3)}
+.pop-ttl{position:absolute;left:32px;right:32px;bottom:78px;z-index:3}
+.pop-ttl small{text-shadow:0 2px 12px rgba(0,0,0,.7);display:block;font:700 11px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.pop-ttl h3{color:#fff;font-size:clamp(40px,5vw,64px);line-height:.98;text-shadow:0 4px 30px rgba(0,0,0,.45);margin:0}
+.pop-ttl h3 em{color:var(--gold)}
+.pop-ttl p{margin:14px 0 0;display:flex;gap:9px;color:rgba(255,255,255,.88);font-size:15px;line-height:1.5;max-width:44ch}
+.pop-ttl p svg{color:var(--gold);flex:none;margin-top:3px}
+.pop-ctl{position:absolute;left:32px;right:26px;bottom:22px;z-index:3;display:flex;align-items:center;gap:14px}
+.pop-dots{display:flex;gap:6px;flex:1;min-width:0}
+.pop-dots button{flex:0 1 38px;height:20px;border:0;background:none;padding:0;cursor:pointer;position:relative}
+.pop-dots button::before,.pop-dots button::after{content:"";position:absolute;left:0;top:8px;height:3px;border-radius:3px}
+.pop-dots button::before{right:0;background:rgba(255,255,255,.3)}
+.pop-dots button::after{width:0;background:var(--gold)}
+.pop-dots button.done::after{width:100%}
+.pop-dots button.on::after{animation:fillbar 4.8s linear forwards}
+@keyframes fillbar{to{width:100%}}
+.pop-cap{font:italic 500 18px var(--serif);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
+.pop-arr{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s,transform .3s var(--ease)}
+.pop-arr:hover{background:var(--gold);color:var(--night);border-color:var(--gold);transform:scale(1.08)}
+.pop-body{position:relative;display:flex;flex-direction:column;min-height:0;overflow:hidden;background:radial-gradient(90% 45% at 100% 0%,rgba(212,176,106,.22),transparent 60%),linear-gradient(180deg,#fffdf8,#f5eedf)}
+.pop-body::before{content:attr(data-mark);position:absolute;right:-18px;bottom:70px;font:500 360px/.8 var(--serif);color:rgba(212,176,106,.13);pointer-events:none;user-select:none}
+.pop-scroll{position:relative;flex:1;overflow:auto;padding:54px clamp(24px,4vw,44px) 14px;scrollbar-width:thin;scrollbar-color:rgba(184,145,74,.5) transparent}
+.pop-scroll>*{animation:rise .7s var(--ease) both}
+.pop-scroll>:nth-child(2){animation-delay:.08s}.pop-scroll>:nth-child(3){animation-delay:.16s}.pop-scroll>:nth-child(4){animation-delay:.24s}.pop-scroll>:nth-child(5){animation-delay:.32s}.pop-scroll>:nth-child(6){animation-delay:.4s}.pop-scroll>:nth-child(7){animation-delay:.48s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.pop-lead{font:italic 500 clamp(22px,2.3vw,28px)/1.32 var(--serif);color:var(--navy);margin:0;text-wrap:balance}
+.pop-lead::before{content:"“";display:block;font:500 64px/.6 var(--serif);color:var(--gold);margin-bottom:6px}
+.pop-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0 0}
+.pop-facts div{padding-top:12px;border-top:2px solid var(--gold)}
+.pop-facts b{display:block;font:500 32px/1 var(--serif);color:var(--navy)}
+.pop-facts span{display:block;margin-top:6px;font:700 10px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink)}
+.pop-price{margin:16px 0 0;font:600 15px var(--sans);color:var(--gold-ink)}
+.pop-h{display:flex;align-items:center;gap:14px;margin:30px 0 16px;font:700 11px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-ink)}
+.pop-h::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.pop-am{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;margin:0;padding:0;list-style:none}
+.pop-am li{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;font:700 12px/1.25 var(--sans);color:var(--navy);animation:pip .6s var(--ease) both;animation-delay:calc(.35s + var(--i) * .05s)}
+@keyframes pip{from{opacity:0;transform:scale(.6)}}
+.pop-am span{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:var(--gold);background:linear-gradient(145deg,#17306a,#0b1e45);box-shadow:0 10px 20px -10px rgba(11,30,69,.8),inset 0 1px 0 rgba(255,255,255,.18),0 0 0 3px #fffdf8,0 0 0 4px rgba(212,176,106,.55);transition:transform .35s var(--ease)}
+.pop-am li:hover span{transform:translateY(-4px) rotate(-6deg)}
+.pop-am svg{width:22px;height:22px}
 .pop-ch{display:flex;flex-wrap:wrap;gap:8px}
-.pop-ch button{font:600 14px var(--sans);color:rgba(255,255,255,.85);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:10px 16px;cursor:pointer;min-height:44px;transition:all .25s}
-.pop-ch button:hover{border-color:var(--gold)}
-.pop-ch button[aria-pressed=true]{background:var(--gold);color:var(--night);border-color:var(--gold);font-weight:700}
-.pop-act{display:flex;flex-wrap:wrap;gap:10px;padding:18px clamp(22px,4vw,40px) 24px;border-top:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg,transparent,rgba(5,13,32,.5))}
-.pop-act .btn{min-height:50px;padding:0 22px;font-size:13px}
-.pop-act .btn-gold{flex:1 1 200px}
-.pop-act .btn-line{border-color:rgba(255,255,255,.28);color:#fff}.pop-act .btn-line:hover{border-color:var(--gold);background:rgba(255,255,255,.06)}
-.pop-act .sq{width:50px;padding:0;flex:none}
-.pop-x{position:absolute;right:16px;top:16px;z-index:5;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(7,21,49,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s,transform .3s var(--ease)}
-.pop-x:hover{background:var(--gold);color:var(--night);transform:rotate(90deg)}
+.pop-ch button{font:600 14px var(--sans);color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 18px;cursor:pointer;min-height:44px;transition:all .25s}
+.pop-ch button:hover{border-color:var(--gold-2)}
+.pop-ch button[aria-pressed=true]{background:var(--navy);color:var(--gold);border-color:var(--navy);box-shadow:0 10px 20px -10px rgba(11,30,69,.7)}
+.pop-act{position:relative;display:flex;flex-wrap:wrap;gap:10px;padding:18px clamp(24px,4vw,44px) 26px;border-top:1px solid var(--line);background:rgba(255,253,248,.92);backdrop-filter:blur(8px)}
+.pop-act .btn{min-height:52px;padding:0 24px;font-size:13px}
+.pop-act .btn-gold{flex:1 1 210px;position:relative;overflow:hidden;background:linear-gradient(135deg,#efd49a,#c79c52);box-shadow:0 16px 30px -14px rgba(138,106,44,.9)}
+.pop-act .btn-gold::after{content:"";position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);animation:shine 3.6s var(--ease) 1.2s infinite}
+@keyframes shine{to{left:120%}}
+.pop-act .btn-gold svg{transition:transform .3s var(--ease)}.pop-act .btn-gold:hover svg{transform:translateX(4px)}
+.pop-act .sq{width:52px;padding:0;flex:none}
+.pop-x{position:absolute;right:18px;top:18px;z-index:6;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--navy);display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 20px -10px rgba(11,30,69,.4);transition:background .25s,color .25s,transform .35s var(--ease)}
+.pop-x:hover{background:var(--navy);color:var(--gold);transform:rotate(90deg)}
 @media(max-width:760px){
-  .pop{height:min(760px,calc(100dvh - 16px));width:calc(100vw - 16px);border-radius:26px}
+  .pop{height:min(780px,calc(100dvh - 16px));width:calc(100vw - 16px);border-radius:28px}
   .pop[open]{display:flex;flex-direction:column}
-  .pop-media{flex:none;height:210px}
+  .pop-media{flex:none;height:262px}
+  .pop-chip{left:18px;top:18px}
+  .pop-ttl{left:20px;right:20px;bottom:56px}.pop-ttl h3{font-size:34px}.pop-ttl p{font-size:13.5px;margin-top:8px}.pop-ttl small{margin-bottom:8px}
+  .pop-ctl{left:20px;right:16px;bottom:14px}.pop-cap{display:none}.pop-arr{width:36px;height:36px}
+  .pop-x{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);right:14px;top:14px;width:40px;height:40px}
   .pop-body{flex:1}
+  .pop-body::before{font-size:240px;bottom:90px}
   .pop-scroll{padding-top:26px}
-  .pop-am{grid-template-columns:1fr 1fr}
-  .pop-strip a{width:52px;height:40px}.pop-strip em{display:none}
-  .pop-act{flex-wrap:wrap;gap:8px;padding-top:14px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}.pop-act .btn{padding:0 14px;min-height:46px}.pop-act .btn-gold{flex:1 1 100%}.pop-act .btn-line:not(.sq){flex:1}.pop-act .sq{width:46px}
+  .pop-lead{font-size:21px}.pop-lead::before{font-size:48px}
+  .pop-facts b{font-size:26px}
+  .pop-am{gap:14px 4px}.pop-am li{font-size:11px}.pop-am span{width:46px;height:46px}
+  .pop-act{gap:8px;padding-top:14px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  .pop-act .btn{padding:0 14px;min-height:48px}.pop-act .btn-gold{flex:1 1 100%}.pop-act .btn-line:not(.sq){flex:1}.pop-act .sq{width:48px}
 }
 </style>
 </head>
@@ -659,7 +684,7 @@ html.cal-lock{overflow:hidden}
 <dialog class="pop" id="pop" aria-labelledby="popT">
   <button class="pop-x" type="button" id="popX" aria-label="Close"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   <div class="pop-media" id="popMedia"></div>
-  <div class="pop-body"><div class="pop-scroll" id="popScroll"></div><div class="pop-act" id="popAct"></div></div>
+  <div class="pop-body" id="popBody"><div class="pop-scroll" id="popScroll"></div><div class="pop-act" id="popAct"></div></div>
 </dialog>
 
 <dialog class="rev" id="review" aria-labelledby="rvT">
@@ -880,31 +905,58 @@ lb.addEventListener("touchend", e => {
 
 /* branch and apartment pop-ups */
 const pop = $("#pop"), popMedia = $("#popMedia"), popScroll = $("#popScroll"), popAct = $("#popAct");
-const amList = () => `<p class="pop-h">Every stay includes</p><ul class="pop-am">${CONFIG.amenities.map(([i, t]) => `<li>${svg(ICONS[i])}${esc(t)}</li>`).join("")}</ul>`;
+const amList = () => `<p class="pop-h">Every stay includes</p><ul class="pop-am">${CONFIG.amenities.map(([i, t], n) => `<li style="--i:${n}"><span>${svg(ICONS[i])}</span>${esc(t)}</li>`).join("")}</ul>`;
 const eager = h => h.replace('loading="lazy"', 'loading="eager"');
-const contactBtns = q => `<a class="btn btn-line sq" href="${tel(CONFIG.phones[0])}" aria-label="Call ${esc(CONFIG.phones[0])}">${svg('<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/>')}</a><a class="btn btn-line sq" href="${wa(q)}" target="_blank" rel="noopener" aria-label="Ask on WhatsApp">${svg('<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5Z"/>')}</a>`;
+const phoneIco = '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/>';
+const chatIco = '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5Z"/>';
+const contactBtns = q => `<a class="btn btn-line sq" href="${tel(CONFIG.phones[0])}" aria-label="Call ${esc(CONFIG.phones[0])}">${svg(phoneIco)}</a><a class="btn btn-line sq" href="${wa(q)}" target="_blank" rel="noopener" aria-label="Ask on WhatsApp">${svg(chatIco)}</a>`;
+const facts = rows => `<div class="pop-facts">${rows.map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("")}</div>`;
+
+/* slideshow */
+let sIdx = 0, sTimer = 0, sN = 0;
+const still = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const goSlide = n => {
+  if (!sN) return;
+  sIdx = (n + sN) % sN;
+  popMedia.querySelectorAll(".sl").forEach((el, i) => el.classList.toggle("on", i === sIdx));
+  popMedia.querySelectorAll(".pop-dots button").forEach((el, i) => { el.classList.toggle("on", i === sIdx); el.classList.toggle("done", i < sIdx); });
+  const cap = popMedia.querySelector(".sl.on"); $("#popCap").textContent = cap ? cap.dataset.cap : "";
+  clearInterval(sTimer);
+  if (sN > 1 && !still) sTimer = setInterval(() => goSlide(sIdx + 1), 4800);
+};
+const buildMedia = (slides, chip, eyebrow, title, sub) => {
+  sN = slides.length;
+  popMedia.innerHTML = (slides.length ? slides.map((s, i) => `<div class="sl" data-cap="${esc(s.c)}">${i < 2 ? eager(s.h) : s.h}</div>` ).join("") : `<div class="ph"><div>${mark}<br>Photos coming soon</div></div>`)
+    + `<span class="pop-chip">${esc(chip)}</span>`
+    + `<div class="pop-ttl"><small>${esc(eyebrow)}</small><h3 id="popT">${title}</h3>${sub}</div>`
+    + `<div class="pop-ctl"><div class="pop-dots">${slides.map((s, i) => `<button type="button" data-s="${i}" aria-label="Photo ${i + 1}"></button>`).join("")}</div><span class="pop-cap" id="popCap"></span>`
+    + (sN > 1 ? `<button class="pop-arr" type="button" data-d="-1" aria-label="Previous photo">${svg('<path d="m15 18-6-6 6-6"/>')}</button><button class="pop-arr" type="button" data-d="1" aria-label="Next photo">${svg('<path d="m9 18 6-6-6-6"/>')}</button>` : "") + `</div>`;
+  goSlide(0);
+};
+const sz = "(max-width:760px) 100vw, 600px";
 const openBranch = id => {
   const b = CONFIG.branches.find(x => x.id === id), g = CONFIG.galleries.find(x => x.id === id);
-  popMedia.innerHTML = (b.photo ? eager(picOf(b.photo, `${b.name}`, "(max-width:760px) 100vw, 480px")) : `<div class="ph"><div>${mark}<br>Photos coming soon</div></div>`)
-    + `<span class="pop-chip">${esc(b.town)}</span>`
-    + (g ? `<div class="pop-strip">${g.photos.slice(1, 5).map(p => `<a href="#gallery" data-gal="${b.id}" aria-label="See ${esc(p.c)}">${pic(p.f, p.c, { sizes: "64px", sw: p.sw, fw: p.fw, w: p.w, h: p.h })}</a>`).join("")}<em>${g.photos.length} photos</em></div>` : "");
-  popScroll.innerHTML = `<p class="eyebrow">Branch</p><h3 id="popT">${esc(b.name)}</h3>`
-    + (b.landmark ? `<p class="pop-loc">${svg(ICONS.pin)}<span>${esc(b.landmark)}</span></p>` : `<p class="pop-lead">Details and photos for this branch are coming soon. Message us and we will gladly help.</p>`)
-    + amList();
-  popAct.innerHTML = `<a class="btn btn-gold" href="#book" data-branch="${b.id}">Book here</a>`
-    + (g ? `<a class="btn btn-line" href="#gallery" data-gal="${b.id}">Photos</a>` : "")
+  const slides = g ? g.photos.slice(0, 7).map(p => ({ c: p.c, h: pic(p.f, p.c, { sizes: sz, sw: p.sw, fw: p.fw, w: p.w, h: p.h }) })) : [];
+  buildMedia(slides, b.town, "Our branch", esc(b.name), b.landmark ? `<p>${svg(ICONS.pin)}<span>${esc(b.landmark)}</span></p>` : "");
+  popScroll.innerHTML = `<p class="pop-lead">${b.landmark ? "Stay at our " + esc(b.name) + " home, set in " + esc(b.town) + " and ready to welcome you." : "Our " + esc(b.name) + " branch is being prepared. Message us and we will gladly help."}</p>`
+    + facts([[b.town, "Location"], [g ? String(g.photos.length) : "Soon", "Photos"], ["Direct", "No platform fees"]]) + amList();
+  $("#popBody").dataset.mark = "W";
+  popAct.innerHTML = `<a class="btn btn-gold" href="#book" data-branch="${b.id}">Book here ${svg(ICONS.arrow)}</a>`
+    + (g ? `<a class="btn btn-line" href="#gallery" data-gal="${b.id}">All photos</a>` : "")
     + (b.map ? `<a class="btn btn-line" href="${b.map}" target="_blank" rel="noopener">${svg(ICONS.pin)}Map</a>` : "")
     + contactBtns(`Hello Whitehouse Stays, I have a question about the ${b.name} branch.`);
 };
 const openApt = i => {
   const a = CONFIG.apartments[i], pick = F.branch.value;
-  popMedia.innerHTML = eager(picOf(a.photo, a.name, "(max-width:760px) 100vw, 480px")) + `<span class="pop-chip">${a.beds} bedroom${a.beds > 1 ? "s" : ""}</span>`;
-  popScroll.innerHTML = `<p class="eyebrow">Apartment</p><h3 id="popT">${esc(a.name)}</h3>`
-    + `<div class="pop-num"><i>${a.beds}</i><span>bedroom${a.beds > 1 ? "s" : ""}<br>fully furnished</span></div><p class="pop-lead">${esc(a.blurb)}</p>`
-    + (a.price ? `<p class="pop-h">Rate</p><p class="pop-lead">${esc(a.price)}</p>` : "")
-    + amList()
+  const extra = CONFIG.galleries.flatMap(g => g.photos).filter(p => p.cat !== "Estate" && p.cat !== "Compound" && p.f !== a.photo && p.f.startsWith(a.photo.split("/")[0] + "/")).slice(0, 5);
+  const slides = [G[a.photo] || { f: a.photo, c: a.name }, ...extra].map(p => ({ c: p.c, h: pic(p.f, p.c, { sizes: sz, sw: p.sw, fw: p.fw, w: p.w, h: p.h }) }));
+  buildMedia(slides, `${a.beds} bedroom${a.beds > 1 ? "s" : ""}`, "Serviced apartment", esc(a.name).replace(/-Bedroom Apartment$/, "-Bedroom <em>Apartment</em>"), "");
+  popScroll.innerHTML = `<p class="pop-lead">${esc(a.blurb)}</p>`
+    + facts([[String(a.beds), `Bedroom${a.beds > 1 ? "s" : ""}`], ["Furnished", "Every apartment"], ["Direct", "No platform fees"]])
+    + (a.price ? `<p class="pop-price">${esc(a.price)}</p>` : "") + amList()
     + `<p class="pop-h">Choose your branch</p><div class="pop-ch" id="popCh">${CONFIG.branches.map(b => `<button type="button" data-b="${b.id}" aria-pressed="${b.id === pick}">${esc(b.name)}</button>`).join("")}</div>`;
-  popAct.innerHTML = `<a class="btn btn-gold" id="popGo" href="#book" data-apt="${esc(a.name)}" data-branch="${pick}">Request this apartment</a>` + contactBtns(`Hello Whitehouse Stays, I am interested in the ${a.name}.`);
+  $("#popBody").dataset.mark = String(a.beds);
+  popAct.innerHTML = `<a class="btn btn-gold" id="popGo" href="#book" data-apt="${esc(a.name)}" data-branch="${pick}">Request this apartment ${svg(ICONS.arrow)}</a>` + contactBtns(`Hello Whitehouse Stays, I am interested in the ${a.name}.`);
 };
 const openPop = key => {
   const [k, v] = key.split(":");
@@ -919,6 +971,15 @@ document.addEventListener("keydown", e => {
   const t = e.target.closest && e.target.closest(".acard[data-pop]");
   if (t && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openPop(t.dataset.pop); }
 });
+popMedia.addEventListener("click", e => {
+  const d = e.target.closest("[data-d]"), s = e.target.closest("[data-s]");
+  if (d) goSlide(sIdx + +d.dataset.d); else if (s) goSlide(+s.dataset.s);
+});
+popMedia.addEventListener("mouseenter", () => clearInterval(sTimer));
+popMedia.addEventListener("mouseleave", () => goSlide(sIdx));
+let px = null;
+popMedia.addEventListener("touchstart", e => { px = e.touches[0].clientX; }, { passive: true });
+popMedia.addEventListener("touchend", e => { if (px === null) return; const dx = e.changedTouches[0].clientX - px; px = null; if (Math.abs(dx) > 40) goSlide(sIdx + (dx < 0 ? 1 : -1)); });
 popScroll.addEventListener("click", e => {
   const c = e.target.closest("#popCh button"); if (!c) return;
   popScroll.querySelectorAll("#popCh button").forEach(x => x.setAttribute("aria-pressed", x === c));
@@ -926,7 +987,7 @@ popScroll.addEventListener("click", e => {
 });
 pop.addEventListener("click", e => { if (e.target === pop || (e.target.closest("a[href^='#']") && !e.target.closest("a[href='#']"))) pop.close(); });
 $("#popX").addEventListener("click", () => pop.close());
-pop.addEventListener("close", () => { document.body.style.overflow = ""; });
+pop.addEventListener("close", () => { clearInterval(sTimer); document.body.style.overflow = ""; });
 
 /* video: only downloads when the guest taps play */
 const V = CONFIG.video;
