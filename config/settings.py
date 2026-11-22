@@ -1,4 +1,4 @@
-"""Whitehouse Airbnb — Django settings. All secrets come from environment variables."""
+"""Whitehouse Stays — Django settings. All secrets come from environment variables."""
 import os
 from decimal import Decimal
 from pathlib import Path
@@ -103,7 +103,7 @@ EMAIL_PORT = int(env("EMAIL_PORT", "587"))
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "Whitehouse Airbnb <bookings@localhost>")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", "Whitehouse Stays <bookings@localhost>")
 STAFF_ALERT_EMAILS = [e.strip() for e in env("STAFF_ALERT_EMAILS", "").split(",") if e.strip()]
 
 # --- Payments ---
@@ -114,7 +114,7 @@ TAX_RATE = Decimal(env("TAX_RATE", "0"))  # e.g. 0.16 for 16% VAT — open decis
 
 # --- Brand ---
 BRAND = {
-    "name": "Whitehouse Airbnb",
+    "name": "Whitehouse Stays",
     "tagline": "Stay • Relax • Feel at Home",
     "promise": "Your Comfort, Our Priority",
     "phones": ["0710110524", "0713791559"],

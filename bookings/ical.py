@@ -27,7 +27,7 @@ def sync_feed(feed: CalendarFeed) -> dict:
     stats = {"created": 0, "updated": 0, "cancelled": 0, "conflicts": 0}
     today = timezone.localdate()
     try:
-        resp = requests.get(feed.url, timeout=30, headers={"User-Agent": "WhitehouseAirbnb/1.0"})
+        resp = requests.get(feed.url, timeout=30, headers={"User-Agent": "WhitehouseStays/1.0"})
         resp.raise_for_status()
         calendar = icalendar.Calendar.from_ical(resp.content)
     except Exception as exc:
@@ -89,7 +89,7 @@ def sync_feed(feed: CalendarFeed) -> dict:
 
 def build_export(unit) -> bytes:
     cal = icalendar.Calendar()
-    cal.add("prodid", "-//Whitehouse Airbnb//Direct Bookings//EN")
+    cal.add("prodid", "-//Whitehouse Stays//Direct Bookings//EN")
     cal.add("version", "2.0")
     now = timezone.now()
     bookings = (

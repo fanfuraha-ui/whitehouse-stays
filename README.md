@@ -1,8 +1,8 @@
-# Whitehouse Airbnb — Direct Booking Website
+# Whitehouse Stays — Direct Booking Website
 
 *Stay • Relax • Feel at Home*
 
-Direct-booking site for Whitehouse Airbnb's three branches (Migori, Kisumu – Makasembo, Kisumu).
+Direct-booking site for Whitehouse Stays's three branches (Migori, Kisumu – Makasembo, Kisumu).
 Guests pick a branch, dates and a 1/2/3-bedroom type, pay with M-Pesa or card via Paystack,
 and get an instant confirmation plus a branded PDF invoice. Staff run everything from `/admin/`.
 

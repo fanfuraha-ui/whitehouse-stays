@@ -43,7 +43,7 @@
       {% with photo=ut.photos.all.0 %}
       {% if photo %}<img src="{{ photo.image.url }}" alt="{{ ut.name }}, {{ branch.name }}" loading="lazy">
       {% elif branch.hero_image %}<img src="{{ branch.hero_image.url }}" alt="{{ branch.name }}" loading="lazy">
-      {% else %}<img src="{% static 'img/hero-room.jpg' %}" alt="Whitehouse Airbnb bedroom" loading="lazy">{% endif %}
+      {% else %}<img src="{% static 'img/hero-room.jpg' %}" alt="Whitehouse Stays bedroom" loading="lazy">{% endif %}
       {% endwith %}
       <div class="unit-body">
         <div class="unit-info">
