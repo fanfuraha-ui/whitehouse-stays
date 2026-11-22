@@ -286,6 +286,109 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;p
 .rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{opacity:1;transform:none;transition:none}.hero-bg img{animation:none;transform:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+/* ---- date picker ---- */
+.dbtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;font:600 16px var(--sans);color:var(--navy);background:transparent;border:0;padding:0;min-height:32px;letter-spacing:0;text-transform:none}
+.dbtn svg{width:18px;height:18px;color:var(--gold-2);flex:none;transition:transform .3s var(--ease)}
+.dbtn:hover svg{transform:translateY(-1px) scale(1.08)}
+.dbtn.empty span{color:#97a0b2;font-weight:500}
+.form .dbtn{min-height:52px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--ivory);font-weight:500;color:var(--ink);transition:border-color .2s,background .2s,box-shadow .2s}
+.form .dbtn:hover{border-color:#cfc4ad}
+.form .dbtn[aria-expanded=true]{background:#fff;border-color:var(--gold-2);box-shadow:0 0 0 4px rgba(212,176,106,.2)}
+.qbar label:has(.dbtn){cursor:pointer;transition:background .25s}
+.qbar label:has(.dbtn[aria-expanded=true]){background:linear-gradient(180deg,rgba(212,176,106,.16),rgba(212,176,106,.04));border-radius:14px}
+.dbtn:focus-visible{outline-offset:6px;border-radius:8px}
+.cal-back{position:fixed;inset:0;z-index:90;background:rgba(7,21,49,.58);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;transition:opacity .3s}
+.cal-back.on{opacity:1}
+.cal{position:absolute;z-index:100;width:min(700px,calc(100vw - 24px));color:#fff;border-radius:24px;padding:22px 30px 22px;background:radial-gradient(120% 80% at 0% 0%,#18306a 0%,transparent 60%),linear-gradient(180deg,#0f2552,#081a3f);border:1px solid rgba(212,176,106,.38);box-shadow:0 50px 100px -24px rgba(3,10,28,.75),0 0 0 6px rgba(11,30,69,.06),inset 0 1px 0 rgba(255,255,255,.08);opacity:0;transform:translateY(10px) scale(.985);transform-origin:20% 0;transition:opacity .28s var(--ease),transform .38s var(--ease)}
+.cal.on{opacity:1;transform:none}
+.cal::before{content:"";position:absolute;left:34px;right:34px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.cal[hidden]{display:none}
+.cal-grab{display:none}
+.cal-top{display:flex;align-items:stretch;gap:10px;margin-bottom:18px}
+.cal-top .sep{align-self:center;color:var(--gold);opacity:.7}
+.seg{flex:1;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#fff;border-radius:14px;padding:10px 16px;cursor:pointer;font-family:var(--sans);transition:border-color .25s,background .25s}
+.seg:hover{border-color:rgba(212,176,106,.55)}
+.seg small{display:block;font:700 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.seg b{display:block;font:500 22px/1.25 var(--serif);color:#fff;margin-top:1px}
+.seg.none b{color:rgba(255,255,255,.4);font-style:italic}
+.seg.on{border-color:var(--gold);background:rgba(212,176,106,.12);box-shadow:0 0 0 3px rgba(212,176,106,.14)}
+.seg.on small{color:var(--gold)}
+.cal-body{position:relative}
+.cal-months{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.cm-t{font:500 27px/1 var(--serif);color:#fff;text-align:center;height:44px;display:flex;align-items:center;justify-content:center;gap:9px;margin:0;letter-spacing:0}
+.cm-t small{font:700 11px var(--sans);letter-spacing:.2em;color:var(--gold)}
+.cm-w,.cm-g{display:grid;grid-template-columns:repeat(7,1fr)}
+.cm-w span{text-align:center;font:700 10.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:rgba(212,176,106,.75);padding:8px 0 10px}
+.d{position:relative;height:42px;padding:0;border:0;background:transparent;color:#fff;font:600 14.5px var(--sans);cursor:pointer;display:block}
+.d i{position:absolute;inset:0;margin:auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-style:normal;transition:background .2s,color .2s,box-shadow .2s,transform .25s var(--ease)}
+.d.x{pointer-events:none}
+.d:not(:disabled):not(.m):hover i{box-shadow:inset 0 0 0 1px var(--gold);transform:scale(1.06)}
+.d:disabled{color:rgba(255,255,255,.22);cursor:not-allowed;text-decoration:line-through;text-decoration-color:rgba(255,255,255,.12)}
+.d.t i{box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.d.t:not(.m) i::after{content:"";position:absolute;bottom:5px;width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.d.r,.d.h{background:rgba(212,176,106,.16)}
+.d.s{background:linear-gradient(90deg,transparent 50%,rgba(212,176,106,.16) 50%)}
+.d.e{background:linear-gradient(270deg,transparent 50%,rgba(212,176,106,.16) 50%)}
+.d.m i{background:linear-gradient(135deg,#efd49a,#c79c52);color:var(--night);font-weight:800;box-shadow:0 8px 20px -8px rgba(212,176,106,.9),inset 0 1px 0 rgba(255,255,255,.5)}
+.d.m:hover i{transform:scale(1.06)}
+.d:focus-visible{outline:none}.d:focus-visible i{box-shadow:0 0 0 2px var(--night),0 0 0 4px var(--gold)}
+.cal-nav{position:absolute;top:0;z-index:2;width:44px;height:44px;border-radius:50%;border:1px solid rgba(212,176,106,.4);background:rgba(255,255,255,.04);color:var(--gold);display:grid;place-items:center;cursor:pointer;transition:background .25s,border-color .25s,transform .25s var(--ease)}
+.cal-nav.prev{left:0}.cal-nav.next{right:0}
+.cal-nav:hover:not(:disabled){background:var(--gold);color:var(--night);transform:scale(1.05)}
+.cal-nav:disabled{opacity:.25;cursor:default}
+.cal-nav svg{width:18px;height:18px}
+.cal-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:16px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
+.cal-sum{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;color:rgba(255,255,255,.72);font-size:14px;min-height:40px}
+.cal-sum b{font:500 30px/1 var(--serif);color:var(--gold)}
+.cal-sum em{font:italic 500 19px var(--serif);color:rgba(255,255,255,.7)}
+.cal-act{display:flex;align-items:center;gap:8px;flex:none}
+.cal-act .lnk{background:none;border:0;color:rgba(255,255,255,.6);font:700 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:12px;border-radius:8px}
+.cal-act .lnk:hover{color:#fff}
+.cal-act .btn{min-height:46px;padding:0 30px}
+.cal-act .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.cal :is(button):focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+html.cal-lock{overflow:hidden}
+@media(max-width:719px){
+  .cal{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:94dvh;overflow:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(40px);transform-origin:50% 100%;border-bottom:0}
+  .cal.on{transform:none}
+  .cal::before{left:24%;right:24%}
+  .cal-grab{display:block;width:44px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);margin:4px auto 16px}
+  .cal-months{grid-template-columns:1fr}.cal-months .cm:nth-child(2){display:none}
+  .seg b{font-size:19px}.seg{padding:9px 12px}
+  .d{height:46px}.d i{width:42px;height:42px}
+  .cal-foot{flex-direction:column;align-items:stretch;gap:12px}
+  .cal-act{justify-content:space-between}.cal-act .btn{flex:1}
+}
+/* ---- stay review ---- */
+.rev{border:0;padding:0;margin:auto;width:min(460px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;border-radius:26px;color:#fff;background:radial-gradient(120% 70% at 0% 0%,#1a3270 0%,transparent 60%),linear-gradient(180deg,#0f2552,#071531);border:1px solid rgba(212,176,106,.38);box-shadow:0 60px 120px -30px rgba(3,10,28,.8)}
+.rev::backdrop{background:rgba(5,13,32,.66);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.rev[open]{animation:revIn .45s var(--ease)}
+@keyframes revIn{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.rev-in{padding:30px clamp(20px,5vw,34px) 26px;position:relative}
+.rev-in::before{content:"";position:absolute;left:34px;right:34px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.rev .eyebrow{color:var(--gold)}
+.rev h3{color:#fff;font-size:34px;margin:10px 0 20px}.rev h3 em{color:var(--gold);font-style:italic}
+.tk{position:relative;background:var(--ivory);color:var(--ink);border-radius:18px;overflow:hidden;-webkit-mask:radial-gradient(circle 11px at 0 var(--cut),#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% var(--cut),#0000 98%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle 11px at 0 var(--cut),#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% var(--cut),#0000 98%,#000) right/51% 100% no-repeat;--cut:124px}
+.tk-d{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:22px 22px 0;height:124px;padding-bottom:0}
+.tk-d small{display:block;font:700 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink)}
+.tk-d b{display:block;font:500 28px/1.05 var(--serif);color:var(--navy);margin-top:4px}
+.tk-d span{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.tk-d>div:last-child{text-align:right}
+.tk-n{text-align:center;position:relative;padding:0 14px}
+.tk-n::before,.tk-n::after{content:"";position:absolute;top:50%;width:12px;height:1px;background:var(--gold-2)}.tk-n::before{left:-6px}.tk-n::after{right:-6px}
+.tk-n i{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#efd49a,#c79c52);color:var(--night);font:600 26px var(--serif);font-style:normal;box-shadow:0 10px 22px -10px rgba(138,106,44,.9)}
+.tk-n em{display:block;font:700 9.5px var(--sans);letter-spacing:.18em;text-transform:uppercase;font-style:normal;color:var(--gold-ink);margin-top:6px}
+.tk-p{height:0;margin:0 18px;border-top:2px dashed #d9cfba}
+.tk dl{margin:0;padding:6px 22px 14px}
+.tk dl div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.tk dl div:last-child{border:0}
+.tk dt{font:700 10.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink);padding-top:3px}
+.tk dd{margin:0;font-weight:600;color:var(--navy);text-align:right}
+.rev .fine{margin:16px 0 0;color:rgba(255,255,255,.6);text-align:center;font-size:13px}
+.rev-act{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:20px}
+.rev-act .btn{min-height:54px}
+.rev-act .btn-line{border-color:rgba(255,255,255,.28);color:#fff}.rev-act .btn-line:hover{border-color:var(--gold);background:rgba(255,255,255,.06)}
+@media(max-width:420px){.tk-d b{font-size:23px}.rev-act{grid-template-columns:1fr}.tk-n{padding:0 8px}}
 </style>
 </head>
 <body>
@@ -448,6 +551,23 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;p
   <div class="lb-thumbs" id="lbThumbs"></div>
   <button class="lbb lb-prev" id="lbPrev" type="button" aria-label="Previous photo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
   <button class="lbb lb-next" id="lbNext" type="button" aria-label="Next photo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+</dialog>
+
+<dialog class="rev" id="review" aria-labelledby="rvT">
+  <div class="rev-in">
+    <p class="eyebrow">Your stay</p>
+    <h3 id="rvT">Review &amp; <em>send</em></h3>
+    <div class="tk">
+      <div class="tk-d" id="rvDates"></div>
+      <div class="tk-p"></div>
+      <dl id="rvList"></dl>
+    </div>
+    <p class="fine">We check availability and reply on WhatsApp with the rate. No payment is taken here.</p>
+    <div class="rev-act">
+      <button class="btn btn-line" type="button" id="rvEdit">Edit</button>
+      <button class="btn btn-wa" type="button" id="rvGo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#fff" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.4-.7a11.6 11.6 0 0 1-4.6-4.1c-.3-.5-1-1.5-1-2.8s.7-2 1-2.3c.2-.3.5-.4.7-.4h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6a8.3 8.3 0 0 0 1.5 1.9 7.6 7.6 0 0 0 2.2 1.3c.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.4.1.1.1.7-.1 1.2Z"/></svg>Send on WhatsApp</button>
+    </div>
+  </div>
 </dialog>
 
 <script>
@@ -717,8 +837,8 @@ document.addEventListener("click", e => {
 $("#bookForm").addEventListener("submit", e => {
   e.preventDefault();
   const d = read(), bad = check(d.ci, d.co);
-  if (bad) { $("#fErr").textContent = bad; (d.ci ? F.co : F.ci).focus(); return; }
-  send(message(d));
+  if (bad) { $("#fErr").textContent = bad; DP.ask(1, d.ci ? "out" : "in"); return; }
+  DP.review(d);
 });
 
 /* quick bar in the hero */
@@ -726,13 +846,181 @@ $("#qbar").addEventListener("submit", e => {
   e.preventDefault();
   const d = { branch: $("#qBranch").value, ci: $("#qIn").value, co: $("#qOut").value, guests: $("#qGuests").value };
   const bad = check(d.ci, d.co);
-  if (bad) { /* hand over to the full form so the guest sees what is missing */
-    F.branch.value = d.branch; F.ci.value = d.ci; F.co.value = d.co; F.guests.value = d.guests;
-    refresh(); $("#fErr").textContent = bad; $("#book").scrollIntoView(); return;
-  }
-  send(message(d));
+  if (bad) { DP.ask(0, d.ci ? "out" : "in"); return; }
+  DP.review(d);
 });
 refresh();
+/* ===== date picker and stay review ===== */
+const DP = (() => {
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const DOW = ["Mo","Tu","We","Th","Fr","Sa","Su"];
+  const CAL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>';
+  const CHEV = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  const short = v => new Date(v + "T12:00:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const long = v => new Date(v + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const nat = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value");
+  const sheet = matchMedia("(max-width:719px)");
+
+  /* swap each native date input for a button; the input stays (hidden) as the single source of truth */
+  const wrap = (el, label) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "dbtn"; b.setAttribute("aria-haspopup", "dialog"); b.setAttribute("aria-expanded", "false");
+    const paint = () => {
+      const v = nat.get.call(el);
+      b.classList.toggle("empty", !v);
+      b.innerHTML = CAL + `<span>${v ? short(v) : "Add date"}</span>`;
+      b.setAttribute("aria-label", `${label}: ${v ? long(v) : "choose a date"}`);
+    };
+    Object.defineProperty(el, "value", { configurable: true, get() { return nat.get.call(this); }, set(v) { nat.set.call(this, v); paint(); } });
+    el.type = "hidden"; el.before(b); paint();
+    return b;
+  };
+  const pairs = [["#qIn", "#qOut"], ["#fIn", "#fOut"]].map(([a, b]) => ({ inp: $(a), out: $(b), bi: wrap($(a), "Check-in"), bo: wrap($(b), "Check-out") }));
+
+  const panel = document.createElement("div");
+  panel.className = "cal"; panel.hidden = true; panel.setAttribute("role", "dialog"); panel.setAttribute("aria-label", "Choose your dates");
+  const back = document.createElement("div"); back.className = "cal-back"; back.hidden = true;
+  document.body.append(back, panel);
+  let cur = null, timer = 0;
+
+  const ymd = (y, m, d) => iso(new Date(y, m, d));
+  const set = (el, v) => { el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); };
+  const endOf = () => { const ci = cur.p.inp.value; return cur.stage === "out" && cur.hover && cur.hover > ci ? cur.hover : cur.p.out.value; };
+  const cls = v => {
+    const ci = cur.p.inp.value, end = endOf(), band = ci && end && end > ci;
+    return "d" + (v === today ? " t" : "") + (v === ci || (band && v === end) ? " m" : "")
+      + (band && v === ci ? " s" : "") + (band && v === end ? " e" : "") + (band && v > ci && v < end ? (cur.hover && cur.stage === "out" ? " h" : " r") : "");
+  };
+  const paintRange = () => panel.querySelectorAll(".d[data-v]").forEach(b => { b.className = cls(b.dataset.v); });
+  const paintMeta = () => {
+    const ci = cur.p.inp.value, co = cur.p.out.value, ok = ci && co > ci, n = ok ? nightsOf(ci, co) : 0;
+    panel.querySelectorAll(".seg").forEach(s => {
+      const v = s.dataset.stage === "in" ? ci : co;
+      s.classList.toggle("on", s.dataset.stage === cur.stage); s.classList.toggle("none", !v);
+      s.querySelector("b").textContent = v ? short(v) : "Add date";
+    });
+    panel.querySelector(".cal-sum").innerHTML = ok ? `<b>${n}</b><span>night${n > 1 ? "s" : ""}</span><em>${short(ci)} → ${short(co)}</em>`
+      : `<em>${cur.stage === "in" ? "Choose your check-in date" : "Now choose your check-out date"}</em>`;
+    panel.querySelector("[data-act=done]").disabled = !ok;
+  };
+  const drawMonths = () => {
+    const v = cur.view, here = new Date(); 
+    panel.querySelector(".cal-months").innerHTML = [0, 1].map(k => {
+      const f = new Date(v.getFullYear(), v.getMonth() + k, 1), y = f.getFullYear(), m = f.getMonth();
+      const lead = (f.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+      let cells = '<span class="d x"></span>'.repeat(lead);
+      for (let d = 1; d <= days; d++) {
+        const s = ymd(y, m, d);
+        cells += `<button type="button" class="${cls(s)}" data-v="${s}" ${s < today ? "disabled" : ""} aria-label="${long(s)}"><i>${d}</i></button>`;
+      }
+      return `<div class="cm"><h4 class="cm-t">${MONTHS[m]} <small>${y}</small></h4><div class="cm-w">${DOW.map(x => `<span>${x}</span>`).join("")}</div><div class="cm-g">${cells}</div></div>`;
+    }).join("");
+    panel.querySelector(".prev").disabled = v.getFullYear() * 12 + v.getMonth() <= here.getFullYear() * 12 + here.getMonth();
+  };
+  const build = () => {
+    panel.innerHTML = `<div class="cal-grab"></div>
+      <div class="cal-top"><button type="button" class="seg" data-stage="in"><small>Check-in</small><b></b></button><span class="sep" aria-hidden="true">→</span><button type="button" class="seg" data-stage="out"><small>Check-out</small><b></b></button></div>
+      <div class="cal-body"><button type="button" class="cal-nav prev" data-nav="-1" aria-label="Previous month">${CHEV("m15 6-6 6 6 6")}</button><button type="button" class="cal-nav next" data-nav="1" aria-label="Next month">${CHEV("m9 6 6 6-6 6")}</button><div class="cal-months"></div></div>
+      <div class="cal-foot"><div class="cal-sum" aria-live="polite"></div><div class="cal-act"><button type="button" class="lnk" data-act="clear">Clear</button><button type="button" class="btn btn-gold" data-act="done">Done</button></div></div>`;
+    drawMonths(); paintMeta();
+  };
+  const place = () => {
+    if (sheet.matches) { panel.style.left = panel.style.top = ""; return; }
+    const r = cur.btn.closest("label").getBoundingClientRect(), w = panel.offsetWidth, h = panel.offsetHeight;
+    const left = Math.min(Math.max(12, r.left), innerWidth - w - 12) + scrollX;
+    const above = r.bottom + h + 24 > innerHeight && r.top > h + 24;
+    panel.style.left = left + "px"; panel.style.top = (above ? r.top - h - 12 : r.bottom + 12) + scrollY + "px";
+    panel.style.transformOrigin = `${Math.max(8, r.left + 40 - left + scrollX)}px ${above ? "100%" : "0"}`;
+  };
+  const close = restore => {
+    if (!cur) return;
+    const { btn } = cur; cur = null;
+    pairs.forEach(p => { p.bi.setAttribute("aria-expanded", "false"); p.bo.setAttribute("aria-expanded", "false"); });
+    panel.classList.remove("on"); back.classList.remove("on"); document.documentElement.classList.remove("cal-lock");
+    clearTimeout(timer); timer = setTimeout(() => { panel.hidden = true; back.hidden = true; }, 320);
+    if (restore) btn.focus({ preventScroll: true });
+  };
+  const open = (p, stage) => {
+    if (cur) close(false);
+    clearTimeout(timer);
+    const btn = stage === "in" ? p.bi : p.bo, base = p.inp.value || p.out.value || today, d = new Date(base + "T12:00:00");
+    cur = { p, stage, btn, hover: null, view: new Date(d.getFullYear(), d.getMonth(), 1) };
+    if (cur.view < new Date(new Date().getFullYear(), new Date().getMonth(), 1)) cur.view = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    build(); btn.setAttribute("aria-expanded", "true");
+    panel.hidden = false; back.hidden = !sheet.matches;
+    place();
+    if (!sheet.matches) { const r = panel.getBoundingClientRect(); if (r.bottom > innerHeight - 12) scrollBy({ top: Math.min(r.bottom - innerHeight + 20, r.top - 80), behavior: "smooth" }); }
+    if (sheet.matches) document.documentElement.classList.add("cal-lock");
+    requestAnimationFrame(() => { panel.classList.add("on"); back.classList.add("on"); });
+    const f = panel.querySelector(`.d[data-v="${stage === "in" ? p.inp.value : p.out.value}"]:not(:disabled)`) || panel.querySelector(`.d[data-v="${today}"]`) || panel.querySelector(".d[data-v]:not(:disabled)");
+    f && f.focus({ preventScroll: true });
+  };
+  const pick = v => {
+    const { p } = cur;
+    if (cur.stage === "in" || !p.inp.value || v <= p.inp.value) { set(p.inp, v); cur.stage = "out"; cur.hover = null; }
+    else { set(p.out, v); paintRange(); paintMeta(); setTimeout(() => close(true), 260); return; }
+    paintRange(); paintMeta();
+  };
+  const focusDay = t => {
+    let b = panel.querySelector(`.d[data-v="${t}"]`);
+    if (!b) { const d = new Date(t + "T12:00:00"); cur.view = new Date(d.getFullYear(), d.getMonth(), 1); drawMonths(); b = panel.querySelector(`.d[data-v="${t}"]`); }
+    b && b.focus({ preventScroll: true });
+  };
+
+  panel.addEventListener("click", e => {
+    const d = e.target.closest(".d[data-v]"), s = e.target.closest("[data-stage]"), n = e.target.closest("[data-nav]"), a = e.target.closest("[data-act]");
+    if (d && !d.disabled) pick(d.dataset.v);
+    else if (s) { cur.stage = s.dataset.stage; cur.hover = null; paintRange(); paintMeta(); }
+    else if (n) { cur.view = new Date(cur.view.getFullYear(), cur.view.getMonth() + +n.dataset.nav, 1); drawMonths(); }
+    else if (a && a.dataset.act === "done") close(true);
+    else if (a) { set(cur.p.inp, ""); set(cur.p.out, ""); cur.stage = "in"; cur.hover = null; paintRange(); paintMeta(); }
+  });
+  panel.addEventListener("mouseover", e => {
+    if (cur.stage !== "out") return;
+    const d = e.target.closest(".d[data-v]:not(:disabled)"), v = d ? d.dataset.v : null;
+    if (v !== cur.hover) { cur.hover = v; paintRange(); }
+  });
+  panel.addEventListener("mouseleave", () => { if (cur && cur.hover) { cur.hover = null; paintRange(); } });
+  panel.addEventListener("keydown", e => {
+    if (e.key === "Escape") { e.stopPropagation(); close(true); return; }
+    const d = e.target.closest(".d[data-v]"); if (!d) return;
+    const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+    if (!step && e.key !== "PageUp" && e.key !== "PageDown") return;
+    e.preventDefault();
+    const t = new Date(d.dataset.v + "T12:00:00");
+    if (step) t.setDate(t.getDate() + step); else t.setMonth(t.getMonth() + (e.key === "PageUp" ? -1 : 1));
+    const s = iso(t); if (s >= today) focusDay(s);
+  });
+  panel.addEventListener("focusout", e => { if (cur && e.relatedTarget && !panel.contains(e.relatedTarget) && !e.relatedTarget.closest(".dbtn")) close(false); });
+  back.addEventListener("click", () => close(true));
+  document.addEventListener("pointerdown", e => { if (cur && !panel.contains(e.target) && !e.target.closest(".dbtn")) close(false); });
+  addEventListener("resize", () => { if (cur) close(false); });
+  pairs.forEach(p => [["bi", "in"], ["bo", "out"]].forEach(([k, stage]) => p[k].addEventListener("click", () => {
+    cur && cur.btn === p[k] ? close(true) : open(p, stage);
+  })));
+
+  /* review pop-up shown before the WhatsApp hand-over */
+  const dlg = $("#review");
+  let pending = null;
+  const review = d => {
+    const n = nightsOf(d.ci, d.co), b = CONFIG.branches.find(x => x.id === d.branch);
+    const part = v => { const t = new Date(v + "T12:00:00"); return `<small>${{ ci: "Check-in", co: "Check-out" }[v === d.ci ? "ci" : "co"]}</small><b>${t.toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</b><span>${t.toLocaleDateString("en-GB", { weekday: "short" })} · ${t.getFullYear()}</span>`; };
+    $("#rvDates").innerHTML = `<div>${part(d.ci)}</div><div class="tk-n"><i>${n}</i><em>night${n > 1 ? "s" : ""}</em></div><div>${part(d.co)}</div>`;
+    const rows = [["Branch", b.name]];
+    if (d.apt !== undefined) rows.push(["Apartment", d.apt || "Not sure yet"]);
+    rows.push(["Guests", d.guests || 1]);
+    if (d.name) rows.push(["Name", d.name]);
+    $("#rvList").innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("");
+    pending = d;
+    dlg.showModal();
+  };
+  $("#rvEdit").addEventListener("click", () => dlg.close());
+  $("#rvGo").addEventListener("click", () => { const d = pending; dlg.close(); if (d) send(message(d)); });
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+  return { ask: (i, stage) => { const p = pairs[i]; (stage === "in" ? p.bi : p.bo).scrollIntoView({ block: "center", behavior: "smooth" }); setTimeout(() => open(p, stage), 350); }, review };
+})();
+
 
 /* header turns solid on scroll */
 const hdr = $("#hdr");
