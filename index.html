@@ -164,6 +164,9 @@ header .btn{min-height:44px;padding:0 22px}
 
 /* gallery */
 .gallery-sec{background:#fff}
+.btabs{display:inline-flex;flex-wrap:wrap;gap:4px;padding:5px;border-radius:999px;background:var(--sand);margin-bottom:16px}
+.btabs .tab{border:0;font-weight:700}
+.btabs .tab[aria-pressed=true]{background:var(--gold);color:var(--night)}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
 .tab{border:1px solid var(--line);background:transparent;color:var(--navy);padding:10px 18px;border-radius:999px;font:600 14px var(--sans);cursor:pointer;min-height:44px;transition:all .25s}
 .tab:hover{border-color:var(--navy)}
@@ -360,9 +363,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;p
 
 <section id="gallery" class="section gallery-sec"><div class="wrap">
   <div class="head rv">
-    <div><p class="eyebrow">Gallery · Kisumu – Makasembo</p><h2 class="title">Take a look <em>inside</em></h2></div>
-    <p class="muted">From the estate gate to the bedrooms. Tap any photo to view it full screen.</p>
+    <div><p class="eyebrow" id="galLabel">Gallery</p><h2 class="title">Take a look <em>inside</em></h2></div>
+    <p class="muted">Choose a branch, then a room. Tap any photo to view it full screen.</p>
   </div>
+  <div class="btabs" id="branchTabs" role="toolbar" aria-label="Choose a branch"></div>
   <div class="tabs" id="tabs" role="toolbar" aria-label="Filter photos"></div>
   <div class="gal" id="gal"></div>
 </div></section>
@@ -454,39 +458,61 @@ const CONFIG = {
   whatsapp: "254710110524",
   branches: [
     { id: "migori", name: "Migori", town: "Migori", landmark: "Behind Machage Hospital, next to Joybeck Apartment",
-      map: "https://maps.google.com/?q=-1.088933,34.462582", photo: "" },
+      map: "https://maps.google.com/?q=-1.088933,34.462582", photo: "migori/01-living-room", gallery: true },
     { id: "makasembo", name: "Kisumu – Makasembo", town: "Kisumu", landmark: "Makasembo Estate, housing by Lapfund. Gated, with secure parking.",
-      map: "https://maps.app.goo.gl/STuGwUYXdtNdMMXo9", photo: "01-estate-entrance", gallery: true },
+      map: "https://maps.app.goo.gl/STuGwUYXdtNdMMXo9", photo: "makasembo/01-estate-entrance", gallery: true },
     { id: "kisumu", name: "Kisumu", town: "Kisumu", landmark: "", map: "", photo: "" }
   ],
   /* Add a price like price: "From Ksh 3,500 / night" and it shows on the card. Empty means no price shown. */
   apartments: [
-    { beds: 1, name: "1-Bedroom Apartment", photo: "07-bedroom", price: "", blurb: "A calm, private space for a solo traveller or a couple. Ideal for work trips and short stays." },
-    { beds: 2, name: "2-Bedroom Apartment", photo: "08-bedroom-blue", price: "", blurb: "Room for a small family or two colleagues, with a shared living area to unwind." },
-    { beds: 3, name: "3-Bedroom Apartment", photo: "09-bedroom-king", price: "", blurb: "Our largest homes, for families and groups who want to stay together." }
+    { beds: 1, name: "1-Bedroom Apartment", photo: "makasembo/07-bedroom", price: "", blurb: "A calm, private space for a solo traveller or a couple. Ideal for work trips and short stays." },
+    { beds: 2, name: "2-Bedroom Apartment", photo: "makasembo/08-bedroom-blue", price: "", blurb: "Room for a small family or two colleagues, with a shared living area to unwind." },
+    { beds: 3, name: "3-Bedroom Apartment", photo: "makasembo/09-bedroom-king", price: "", blurb: "Our largest homes, for families and groups who want to stay together." }
   ],
   amenities: [
     ["wifi", "Wi-Fi"], ["car", "Secure parking"], ["tv", "Smart TV"], ["pot", "Equipped kitchen"],
     ["shield", "24/7 security"], ["spark", "Housekeeping"], ["drop", "Hot shower"], ["bolt", "Backup power"]
   ],
-  /* Kisumu – Makasembo photos, in tour order. cat = gallery filter. sw/fw = small and full image widths. */
-  gallery: [
-    { f: "01-estate-entrance", c: "Makasembo Estate entrance", cat: "Estate", sw: 640, fw: 1280, w: 4, h: 3 },
-    { f: "02-grounds-parking", c: "Estate grounds and parking", cat: "Estate", sw: 640, fw: 1280, w: 16, h: 9.5 },
-    { f: "03-living-room", c: "Living room", cat: "Living", sw: 640, fw: 1280, w: 4, h: 3 },
-    { f: "04-lounge", c: "Lounge", cat: "Living", sw: 640, fw: 1280, w: 4, h: 3 },
-    { f: "05-kitchen-bar", c: "Kitchen and breakfast bar", cat: "Kitchen", sw: 480, fw: 960, w: 3, h: 4 },
-    { f: "06-kitchen", c: "Kitchen", cat: "Kitchen", sw: 640, fw: 951, w: 16, h: 9.2 },
-    { f: "07-bedroom", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1280, w: 4, h: 3 },
-    { f: "08-bedroom-blue", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1141, w: 16, h: 9.7 },
-    { f: "09-bedroom-king", c: "Bedroom", cat: "Bedrooms", sw: 480, fw: 960, w: 3, h: 4 },
-    { f: "10-bedroom-double", c: "Bedroom", cat: "Bedrooms", sw: 480, fw: 960, w: 3, h: 4 }
+  /* Photo galleries, one per branch, in tour order. id must match a branch id. cat = filter button.
+     f = file in images/ (without -sm or extension). sw/fw = small and full widths, w/h = shape. */
+  galleries: [
+    { id: "makasembo", photos: [
+      { f: "makasembo/01-estate-entrance", c: "Makasembo Estate entrance", cat: "Estate", sw: 640, fw: 1280, w: 4, h: 3 },
+      { f: "makasembo/02-grounds-parking", c: "Estate grounds and parking", cat: "Estate", sw: 640, fw: 1280, w: 16, h: 9.5 },
+      { f: "makasembo/03-living-room", c: "Living room", cat: "Living", sw: 640, fw: 1280, w: 4, h: 3 },
+      { f: "makasembo/04-lounge", c: "Lounge", cat: "Living", sw: 640, fw: 1280, w: 4, h: 3 },
+      { f: "makasembo/05-kitchen-bar", c: "Kitchen and breakfast bar", cat: "Kitchen", sw: 480, fw: 960, w: 3, h: 4 },
+      { f: "makasembo/06-kitchen", c: "Kitchen", cat: "Kitchen", sw: 640, fw: 951, w: 16, h: 9.2 },
+      { f: "makasembo/07-bedroom", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1280, w: 4, h: 3 },
+      { f: "makasembo/08-bedroom-blue", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1141, w: 16, h: 9.7 },
+      { f: "makasembo/09-bedroom-king", c: "Bedroom", cat: "Bedrooms", sw: 480, fw: 960, w: 3, h: 4 },
+      { f: "makasembo/10-bedroom-double", c: "Bedroom", cat: "Bedrooms", sw: 480, fw: 960, w: 3, h: 4 }
+  
+    ] },
+    { id: "migori", photos: [
+      { f: "migori/01-living-room", c: "Living room", cat: "Living", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/02-lounge-blue", c: "Lounge", cat: "Living", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/03-lounge-beige", c: "Lounge", cat: "Living", sw: 640, fw: 1040, w: 10.4, h: 7.8 },
+      { f: "migori/04-sitting-room", c: "Sitting room", cat: "Living", sw: 640, fw: 1040, w: 10.4, h: 7.8 },
+      { f: "migori/05-bedroom-blue", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/06-bedroom-maroon", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/07-bedroom-beige", c: "Bedroom", cat: "Bedrooms", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/08-bedroom-rose", c: "Bedroom", cat: "Bedrooms", sw: 480, fw: 780, w: 7.8, h: 10.4 },
+      { f: "migori/09-bed-linen", c: "Fresh linen and towels", cat: "Bedrooms", sw: 640, fw: 1040, w: 10.4, h: 7.8 },
+      { f: "migori/10-kitchen-marble", c: "Kitchen", cat: "Kitchen", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/11-kitchenette", c: "Kitchenette", cat: "Kitchen", sw: 640, fw: 1280, w: 12.8, h: 9.6 },
+      { f: "migori/12-gas-hob", c: "Gas cooker", cat: "Kitchen", sw: 640, fw: 1040, w: 10.4, h: 7.8 },
+      { f: "migori/13-kitchen-cooker", c: "Kitchen with oven", cat: "Kitchen", sw: 480, fw: 960, w: 9.6, h: 12.8 },
+      { f: "migori/14-bathroom", c: "Bathroom", cat: "Bathroom", sw: 640, fw: 1280, w: 12.8, h: 8.54 },
+      { f: "migori/15-washroom", c: "Washroom", cat: "Bathroom", sw: 480, fw: 960, w: 9.6, h: 12.8 },
+      { f: "migori/16-compound", c: "Gated compound", cat: "Compound", sw: 480, fw: 960, w: 9.6, h: 12.8 }
+    ] }
   ],
   video: { src: "images/makasembo/apartment-tour.mp4", poster: "images/makasembo/apartment-tour-poster" },
   faq: [
     ["How do I book?", "Use the reservation form or the quick search at the top of the page. Your WhatsApp opens with the booking details filled in; send it and we reply to confirm availability and the rate."],
     ["How do I pay?", "We confirm the total and how to pay when we reply on WhatsApp. There are no platform or booking fees when you book direct."],
-    ["Can I see the apartment before booking?", "Yes. Browse the photo gallery and the video tour above, or call us and we will answer any questions about the apartment and the area."],
+    ["Can I see the apartment before booking?", "Yes. Browse the Migori and Makasembo photo galleries and the video tour above, or call us and we will answer any questions about the apartment and the area."],
     ["Do you take longer stays?", "Yes. Tell us your dates on WhatsApp and we will get back to you about weekly and monthly stays."],
     ["How do I find the apartment?", "Each branch card has a Map button that opens Google Maps. We also share directions and check-in details before you arrive."]
   ]
@@ -495,7 +521,7 @@ const CONFIG = {
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const IMG = "images/makasembo/";
+const IMG = "images/";
 const wa = t => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t)}`;
 const tel = p => `tel:${p.replace(/\s+/g, "")}`;
 const svg = d => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
@@ -515,7 +541,8 @@ const ICONS = {
 const pic = (f, alt, { sizes = "100vw", sw = 640, fw = 1280, w = 4, h = 3 } = {}) =>
   `<picture><source type="image/webp" srcset="${IMG}${f}-sm.webp ${sw}w, ${IMG}${f}.webp ${fw}w" sizes="${sizes}">` +
   `<img src="${IMG}${f}-sm.jpg" srcset="${IMG}${f}-sm.jpg ${sw}w, ${IMG}${f}.jpg ${fw}w" sizes="${sizes}" alt="${esc(alt)}" width="${Math.round(w * 100)}" height="${Math.round(h * 100)}" loading="lazy" decoding="async"></picture>`;
-const G = Object.fromEntries(CONFIG.gallery.map(p => [p.f, p]));
+const G = Object.fromEntries(CONFIG.galleries.flatMap(g => g.photos).map(p => [p.f, p]));
+const bname = id => (CONFIG.branches.find(b => b.id === id) || {}).name || id;
 const picOf = (f, alt, sizes) => { const p = G[f] || {}; return pic(f, alt, { sizes, sw: p.sw, fw: p.fw, w: p.w, h: p.h }); };
 
 /* contact details */
@@ -540,7 +567,7 @@ $("#branchCards").innerHTML = CONFIG.branches.map(b => `
       ${b.landmark ? `<p class="muted">${esc(b.landmark)}</p>` : ""}
       <div class="acts">
         <a class="btn btn-navy" href="#book" data-branch="${b.id}">Book here</a>
-        ${b.gallery ? `<a class="btn btn-line" href="#gallery">Photos</a>` : ""}
+        ${b.gallery ? `<a class="btn btn-line" href="#gallery" data-gal="${b.id}">Photos</a>` : ""}
         ${b.map ? `<a class="btn btn-line" href="${b.map}" target="_blank" rel="noopener">${svg(ICONS.pin)}Map</a>` : ""}
       </div>
     </div>
@@ -559,23 +586,29 @@ $("#aptCards").innerHTML = CONFIG.apartments.map(a => `
     </div>
   </a>`).join("");
 
-/* gallery with filters */
-const cats = ["All", ...new Set(CONFIG.gallery.map(p => p.cat))];
-let shown = CONFIG.gallery;
-$("#tabs").innerHTML = cats.map((c, i) => `<button class="tab" type="button" aria-pressed="${i === 0}" data-cat="${c}">${c}</button>`).join("");
-const drawGallery = cat => {
-  shown = cat === "All" ? CONFIG.gallery : CONFIG.gallery.filter(p => p.cat === cat);
+/* gallery: branch switch + room filters */
+let gal = CONFIG.galleries[0], cat = "All", shown = gal.photos;
+const drawTabs = () => {
+  const cats = ["All", ...new Set(gal.photos.map(p => p.cat))];
+  $("#branchTabs").innerHTML = CONFIG.galleries.map(g => `<button class="tab" type="button" aria-pressed="${g === gal}" data-g="${g.id}">${esc(bname(g.id))}</button>`).join("");
+  $("#tabs").innerHTML = cats.map(c => `<button class="tab" type="button" aria-pressed="${c === cat}" data-cat="${c}">${c}</button>`).join("");
+  $("#galLabel").textContent = `Gallery · ${bname(gal.id)}`;
+};
+const drawGallery = () => {
+  shown = cat === "All" ? gal.photos : gal.photos.filter(p => p.cat === cat);
   $("#gal").innerHTML = shown.map((p, i) => `
     <button class="gi${cat === "All" && i === 0 ? " wide" : p.h > p.w ? " tall" : ""}" type="button" data-i="${i}" aria-label="Open photo: ${esc(p.c)}">
-      ${pic(p.f, p.c + ", Kisumu – Makasembo", { sizes: "(max-width:600px) 50vw, 25vw", sw: p.sw, fw: p.fw, w: p.w, h: p.h })}<span>${esc(p.c)}</span>
+      ${pic(p.f, `${p.c}, ${bname(gal.id)}`, { sizes: "(max-width:600px) 50vw, 25vw", sw: p.sw, fw: p.fw, w: p.w, h: p.h })}<span>${esc(p.c)}</span>
     </button>`).join("");
 };
-drawGallery("All");
+const pickGallery = id => { gal = CONFIG.galleries.find(g => g.id === id) || gal; cat = "All"; drawTabs(); drawGallery(); };
+pickGallery(gal.id);
+$("#branchTabs").addEventListener("click", e => { const t = e.target.closest(".tab"); if (t) pickGallery(t.dataset.g); });
 $("#tabs").addEventListener("click", e => {
   const t = e.target.closest(".tab"); if (!t) return;
-  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-pressed", b === t));
-  drawGallery(t.dataset.cat);
+  cat = t.dataset.cat; drawTabs(); drawGallery();
 });
+document.addEventListener("click", e => { const a = e.target.closest("[data-gal]"); if (a) pickGallery(a.dataset.gal); });
 
 /* lightbox */
 const lb = $("#lb"), lbImg = $("#lbImg");
