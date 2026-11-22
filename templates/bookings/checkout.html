@@ -2,7 +2,7 @@
 {% load humanize %}
 {% block title %}Complete your booking — {{ BRAND.name }}{% endblock %}
 {% block content %}
-<section class="wrap section checkout">
+<section class="wrap section-tight checkout">
   <div class="summary">
     <h1>Your stay</h1>
     <p><strong>{{ unit_type.name }}</strong><br>{{ branch.name }}{% if branch.landmark %} · {{ branch.landmark }}{% endif %}</p>
@@ -29,6 +29,10 @@
         {% for e in field.errors %}<span class="error">{{ e }}</span>{% endfor %}
       </label>
     {% endfor %}
+    <div>
+      <p style="font-weight:600;color:#0d2557;margin-bottom:8px">Pay with</p>
+      <div class="pay-logos"><span>M-Pesa</span><span>Visa</span><span>Mastercard</span></div>
+    </div>
     <button class="btn btn-gold btn-block" type="submit">Pay Ksh {{ quote.total|floatformat:0|intcomma }} — M-Pesa or card</button>
     <p class="muted small">Your unit is held for 15 minutes while you pay. Secure checkout by Paystack.</p>
   </form>

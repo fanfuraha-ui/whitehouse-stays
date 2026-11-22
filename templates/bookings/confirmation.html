@@ -2,9 +2,9 @@
 {% load humanize %}
 {% block title %}Booking {{ booking.reference }} — {{ BRAND.name }}{% endblock %}
 {% block content %}
-<section class="wrap section narrow">
+<section class="wrap section narrow"><div class="stack">
   {% if booking.status == "confirmed" %}
-    <p class="script gold big">Karibu!</p>
+    <p class="karibu">Karibu!</p>
     <h1>Your booking is confirmed</h1>
     <p>Reference <strong>{{ booking.reference }}</strong>. We've emailed your receipt and invoice{% if booking.guest %} to {{ booking.guest.email }}{% endif %}.</p>
     <dl class="facts">
@@ -13,8 +13,10 @@
       <dt>Check-out</dt><dd>{{ booking.check_out|date:"D j M Y" }}, by {{ booking.branch.check_out_time|time:"g:i A" }}</dd>
       <dt>Paid</dt><dd>Ksh {{ booking.amount_paid|floatformat:0|intcomma }}</dd>
     </dl>
+    <div class="actions">
     <a class="btn btn-navy" href="{{ booking.branch.directions_url }}" target="_blank" rel="noopener">Directions</a>
     <a class="btn btn-outline" href="https://wa.me/{{ BRAND.whatsapp }}?text=Hi%2C%20booking%20{{ booking.reference }}">WhatsApp us</a>
+    </div>
   {% elif booking.needs_attention %}
     <h1>Payment received — we're finalising your room</h1>
     <p>Your payment for <strong>{{ booking.reference }}</strong> went through, but your hold expired. Our team will call you shortly, or reach us on {{ BRAND.phones.0 }}.</p>
@@ -22,5 +24,5 @@
     <h1>We're confirming your payment</h1>
     <p>This usually takes under a minute. Refresh this page, or call {{ BRAND.phones.0 }} with reference <strong>{{ booking.reference }}</strong>.</p>
   {% endif %}
-</section>
+</div></section>
 {% endblock %}

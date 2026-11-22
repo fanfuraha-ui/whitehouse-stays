@@ -1,11 +1,17 @@
-from django.db.models import Count, Min, Q
+from django.db.models import Count, Max, Min, Q
 from django.shortcuts import get_object_or_404, render
 
 from bookings.forms import SearchForm
 from bookings.pricing import PricingError, quote
 from bookings.services import free_units
 
-from .models import Branch
+from .models import Branch, UnitType
+
+APARTMENT_BLURBS = {
+    1: "A calm, private space for a solo traveller or a couple. Ideal for work trips and short stays.",
+    2: "Room for a small family or two colleagues, with a shared living area to unwind.",
+    3: "Our largest homes, for families and groups who want to stay together.",
+}
 
 
 def home(request):
@@ -16,7 +22,18 @@ def home(request):
             type_count=Count("unit_types", filter=Q(unit_types__is_active=True), distinct=True),
         )
     )
-    return render(request, "properties/home.html", {"branches": branches, "form": SearchForm()})
+    apartment_types = [
+        {**row, "blurb": APARTMENT_BLURBS.get(row["bedrooms"], "")}
+        for row in (
+            UnitType.objects.filter(is_active=True, branch__is_active=True)
+            .values("bedrooms")
+            .annotate(from_rate=Min("base_rate"), sleeps=Max("max_guests"))
+            .order_by("bedrooms")
+        )
+    ]
+    return render(request, "properties/home.html", {
+        "branches": branches, "apartment_types": apartment_types, "form": SearchForm(),
+    })
 
 
 def branch_detail(request, slug):
@@ -45,5 +62,6 @@ def branch_detail(request, slug):
     return render(
         request,
         "properties/branch_detail.html",
-        {"branch": branch, "form": form, "searched": searched, "options": options},
+        {"branch": branch, "form": form, "searched": searched, "options": options,
+         "all_branches": Branch.objects.filter(is_active=True)},
     )

@@ -1,48 +1,115 @@
 {% extends "base.html" %}
-{% load humanize %}
+{% load static humanize %}
 {% block content %}
 <section class="hero">
-  <div class="wrap hero-inner">
-    <p class="script gold hero-tagline">{{ BRAND.tagline }}</p>
-    <h1>Serviced apartments in Migori &amp; Kisumu</h1>
-    <p class="lead">1, 2 and 3-bedroom homes. Book direct, pay with M-Pesa or card, and get your confirmation instantly.</p>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="hero-tagline">{{ BRAND.tagline }}</p>
+      <h1>Serviced apartments in Migori &amp; Kisumu</h1>
+      <p class="lead">Clean, quiet 1, 2 and 3-bedroom homes for business trips, family visits and weekends away. Book direct, pay with M-Pesa or card, and get your confirmation instantly.</p>
 
-    <form id="book" class="search-card" method="get" action="" onsubmit="this.action='/stays/'+this.branch.value+'/'">
-      <label>Branch
-        <select name="branch" required>
-          {% for b in branches %}<option value="{{ b.slug }}">{{ b.name }}</option>{% endfor %}
-        </select>
-      </label>
-      <label>Check-in {{ form.check_in }}</label>
-      <label>Check-out {{ form.check_out }}</label>
-      <label>Guests {{ form.guests }}</label>
-      <button class="btn btn-gold" type="submit">Check availability</button>
-    </form>
+      <form id="book" class="search-card" method="get" action="{% if branches %}{{ branches.0.get_absolute_url }}{% endif %}">
+        <label class="wide">Branch
+          <select id="branch-select" aria-label="Branch">
+            {% for b in branches %}<option value="{{ b.get_absolute_url }}">{{ b.name }}</option>{% endfor %}
+          </select>
+        </label>
+        <label>Check-in {{ form.check_in }}</label>
+        <label>Check-out {{ form.check_out }}</label>
+        <label>Guests {{ form.guests }}</label>
+        <button class="btn btn-navy" type="submit">Check availability</button>
+      </form>
+
+      <div class="ticks">
+        <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#e0b84a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Pay with M-Pesa</span>
+        <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#e0b84a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instant confirmation</span>
+        <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#e0b84a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No platform fees</span>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="{% static 'img/hero-room.jpg' %}" alt="Bedroom at Whitehouse Airbnb with navy cushions and white linen" width="928" height="472">
+      <div class="hero-badge"><b>1 · 2 · 3 Bedrooms</b><span>across {{ branches|length }} branches</span></div>
+    </div>
   </div>
 </section>
 
-<section class="wrap section">
-  <h2 class="section-title">Our branches</h2>
-  <div class="cards">
+<section id="branches" class="section wrap" style="padding-bottom:40px">
+  <div class="section-head">
+    <div><p class="eyebrow">Our branches</p><h2 class="section-title">Three homes, one standard</h2></div>
+    <p class="muted">Pick the branch closest to where you need to be. Every one has the same Whitehouse care.</p>
+  </div>
+  <div class="row">
     {% for b in branches %}
     <a class="card" href="{{ b.get_absolute_url }}">
-      {% if b.hero_image %}<img src="{{ b.hero_image.url }}" alt="{{ b.name }} apartments" loading="lazy" width="640" height="400">
-      {% else %}<div class="card-ph" aria-hidden="true"></div>{% endif %}
+      {% if b.hero_image %}<img src="{{ b.hero_image.url }}" alt="{{ b.name }} apartments" loading="lazy">
+      {% else %}<div class="photo-ph" aria-hidden="true"><svg width="56" height="48" viewBox="0 0 52 44" fill="none"><path d="M4 20 26 4l22 16" stroke="#e0b84a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 38V26M12 32h28M40 38V30" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg></div>{% endif %}
       <div class="card-body">
         <h3>{{ b.name }}</h3>
         {% if b.landmark %}<p class="muted">{{ b.landmark }}</p>{% endif %}
-        {% if b.from_rate %}<p class="price">From <strong>Ksh {{ b.from_rate|floatformat:0|intcomma }}</strong> / night</p>{% endif %}
+        {% if b.from_rate %}<p>From <strong>Ksh {{ b.from_rate|floatformat:0|intcomma }}</strong> / night</p>{% endif %}
+        <p class="more">View apartments <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></p>
       </div>
     </a>
     {% endfor %}
   </div>
 </section>
 
-<section class="band">
-  <div class="wrap perks">
-    <div><strong>Pay your way</strong><span>M-Pesa or Visa / Mastercard</span></div>
-    <div><strong>Instant confirmation</strong><span>Receipt and invoice by email</span></div>
-    <div><strong>Talk to a person</strong><span>Call or WhatsApp {{ BRAND.phones.0 }}</span></div>
+{% if apartment_types %}
+<section id="apartments" class="section-tight wrap">
+  <div class="section-head"><div><p class="eyebrow">Apartments</p><h2 class="section-title">Choose your space</h2></div></div>
+  <div class="row">
+    {% for t in apartment_types %}
+    <article class="apt">
+      <div class="apt-top"><span class="apt-num">{{ t.bedrooms }}</span><span class="muted small">Sleeps up to {{ t.sleeps }}</span></div>
+      <h3>{{ t.bedrooms }}-Bedroom Apartment</h3>
+      <p class="muted">{{ t.blurb }}</p>
+      <p class="price">From <strong>Ksh {{ t.from_rate|floatformat:0|intcomma }}</strong> / night</p>
+      <a class="btn btn-outline" href="#book">See availability</a>
+    </article>
+    {% endfor %}
   </div>
 </section>
+{% endif %}
+
+<section id="why" class="section soft">
+  <div class="wrap">
+    <div class="section-head"><div><p class="eyebrow">Why book direct</p><h2 class="section-title">Book with us, not a middleman</h2></div></div>
+    <div class="row">
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0d2557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+        <h3>Pay your way</h3><p class="muted">M-Pesa on your phone, or Visa and Mastercard. Secure checkout by Paystack.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0d2557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg>
+        <h3>Instant confirmation</h3><p class="muted">Your booking reference, check-in details and invoice arrive by email right away.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0d2557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <h3>No platform fees</h3><p class="muted">Booking direct means no third-party service charge added to your stay.</p>
+      </div>
+      <div class="feature">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0d2557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5Z"/></svg>
+        <h3>Talk to a real person</h3><p class="muted">Questions before or during your stay? Call or WhatsApp us directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap">
+  <div class="section-head"><div><p class="eyebrow">How it works</p><h2 class="section-title">Booked in three steps</h2></div></div>
+  <div class="row" style="gap:32px">
+    <div class="step"><span class="step-num">1</span><div><h3>Pick branch and dates</h3><p class="muted">See which apartments are free and the exact price for your stay.</p></div></div>
+    <div class="step"><span class="step-num">2</span><div><h3>Pay securely</h3><p class="muted">Enter your M-Pesa PIN on the prompt, or pay by card. Your room is held while you pay.</p></div></div>
+    <div class="step"><span class="step-num">3</span><div><h3>Check in and relax</h3><p class="muted">Get directions and check-in details by email. We'll be ready for you.</p></div></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Send the search to the chosen branch's page (the form works without JS too: first branch).
+  document.getElementById("book").addEventListener("submit", function () {
+    this.action = document.getElementById("branch-select").value;
+  });
+</script>
 {% endblock %}
