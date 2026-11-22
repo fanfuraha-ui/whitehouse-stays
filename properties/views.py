@@ -5,6 +5,7 @@ from bookings.forms import SearchForm
 from bookings.pricing import PricingError, quote
 from bookings.services import free_units
 
+from .branch_media import media_for
 from .models import Branch, UnitType
 
 APARTMENT_BLURBS = {
@@ -22,6 +23,9 @@ def home(request):
             type_count=Count("unit_types", filter=Q(unit_types__is_active=True), distinct=True),
         )
     )
+    branches = list(branches)
+    for b in branches:
+        b.card_photo = media_for(b.slug).get("card")
     apartment_types = [
         {**row, "blurb": APARTMENT_BLURBS.get(row["bedrooms"], "")}
         for row in (
@@ -41,10 +45,13 @@ def branch_detail(request, slug):
     unit_types = branch.unit_types.filter(is_active=True).prefetch_related("photos", "amenities")
     form = SearchForm(request.GET or None)
     searched = form.is_valid()
+    media = media_for(branch.slug)
+    unit_photos = media.get("units", {})
 
     options = []
     for unit_type in unit_types:
-        option = {"unit_type": unit_type, "available": None, "quote": None, "reason": ""}
+        option = {"unit_type": unit_type, "available": None, "quote": None, "reason": "",
+                  "photo": unit_photos.get(unit_type.bedrooms)}
         if searched:
             data = form.cleaned_data
             if data["guests"] > unit_type.max_guests:
@@ -62,6 +69,6 @@ def branch_detail(request, slug):
     return render(
         request,
         "properties/branch_detail.html",
-        {"branch": branch, "form": form, "searched": searched, "options": options,
+        {"branch": branch, "form": form, "searched": searched, "options": options, "media": media,
          "all_branches": Branch.objects.filter(is_active=True)},
     )

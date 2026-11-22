@@ -42,6 +42,7 @@
     {% for b in branches %}
     <a class="card" href="{{ b.get_absolute_url }}">
       {% if b.hero_image %}<img src="{{ b.hero_image.url }}" alt="{{ b.name }} apartments" loading="lazy">
+      {% elif b.card_photo %}<img src="{% static b.card_photo %}" alt="Lounge at {{ b.name }}" loading="lazy" width="640" height="478">
       {% else %}<div class="photo-ph" aria-hidden="true"><svg width="56" height="48" viewBox="0 0 52 44" fill="none"><path d="M4 20 26 4l22 16" stroke="#e0b84a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 38V26M12 32h28M40 38V30" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg></div>{% endif %}
       <div class="card-body">
         <h3>{{ b.name }}</h3>
