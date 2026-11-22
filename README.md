@@ -3,7 +3,7 @@
 *Stay • Relax • Feel at Home*
 
 Website for Whitehouse Stays serviced apartments (Migori, Kisumu – Makasembo, Kisumu).
-Single-file site, same format as the Nibbana Garden and Tulips Garden websites.
+Single-file site, same format as the Nibbana Garden and Tulips Garden websites. Photos are served as WebP with JPEG fallback.
 Guests choose a branch, dates and apartment, and the form opens WhatsApp with the booking message ready to send.
 
 ## What is in this repo
