@@ -131,7 +131,7 @@ header .btn{min-height:44px;padding:0 22px}
 
 /* branches */
 .branches{background:var(--sand)}
-.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.bgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
 .bcard{background:#fff;border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--line);transition:transform .4s var(--ease),box-shadow .4s,opacity .9s var(--ease)}
 .bcard:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
 .bimg{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--navy-2)}
@@ -590,7 +590,7 @@ html.cal-lock{overflow:hidden}
 </section>
 
 <section class="facts" aria-label="At a glance"><div class="wrap">
-  <div class="fact"><b>3</b><span>Branches in Migori and Kisumu</span></div>
+  <div class="fact"><b>2</b><span>Branches in Migori and Kisumu</span></div>
   <div class="fact"><b>1 · 2 · 3</b><span>Bedroom apartments</span></div>
   <div class="fact"><b>Furnished</b><span>Kitchen, lounge, made-up beds</span></div>
   <div class="fact"><b>Direct</b><span>Book with us, not a middleman</span></div>
@@ -749,8 +749,7 @@ const CONFIG = {
     { id: "migori", name: "Migori", town: "Migori", landmark: "Behind Machage Hospital, next to Joybeck Apartment",
       map: "https://maps.google.com/?q=-1.088933,34.462582", photo: "migori/01-living-room", gallery: true },
     { id: "makasembo", name: "Kisumu – Makasembo", town: "Kisumu", landmark: "Makasembo Estate, housing by Lapfund. Gated, with secure parking.",
-      map: "https://maps.app.goo.gl/STuGwUYXdtNdMMXo9", photo: "makasembo/01-estate-entrance", gallery: true },
-    { id: "kisumu", name: "Kisumu", town: "Kisumu", landmark: "", map: "", photo: "" }
+      map: "https://maps.app.goo.gl/STuGwUYXdtNdMMXo9", photo: "makasembo/01-estate-entrance", gallery: true }
   ],
   /* Add a price like price: "From Ksh 3,500 / night" and it shows on the card. Empty means no price shown. */
   apartments: [
