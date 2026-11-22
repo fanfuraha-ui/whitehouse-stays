@@ -517,6 +517,40 @@ html.cal-lock{overflow:hidden}
   .pop-act{gap:8px;padding-top:14px;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
   .pop-act .btn{padding:0 14px;min-height:48px}.pop-act .btn-gold{flex:1 1 100%}.pop-act .btn-line:not(.sq){flex:1}.pop-act .sq{width:48px}
 }
+/* ---- custom select pop-ups ---- */
+.fsb .th{width:30px;height:30px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--gold);background:var(--navy)}
+.fsb .th.ic{display:grid;place-items:center;color:var(--gold)}
+.fsb .th.ic svg{width:16px;height:16px;color:var(--gold)}
+.fsb>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fsb .chev{margin-left:auto;width:16px;height:16px;color:var(--muted);transition:transform .35s var(--ease)}
+.fsb[aria-expanded=true] .chev{transform:rotate(180deg);color:var(--gold-2)}
+.fs{position:absolute;z-index:100;width:min(470px,calc(100vw - 24px));max-height:min(620px,calc(100dvh - 24px));overflow:auto;color:#fff;border-radius:26px;padding:22px 12px 12px;background:radial-gradient(120% 70% at 0% 0%,#18306a 0%,transparent 60%),linear-gradient(180deg,#0f2552,#081a3f);border:1px solid rgba(212,176,106,.4);box-shadow:0 50px 100px -24px rgba(3,10,28,.8),inset 0 1px 0 rgba(255,255,255,.08);opacity:0;transform:translateY(12px) scale(.98);transform-origin:20% 0;transition:opacity .28s var(--ease),transform .4s var(--ease);scrollbar-width:thin;scrollbar-color:rgba(212,176,106,.4) transparent}
+.fs.on{opacity:1;transform:none}.fs[hidden]{display:none}
+.fs::before{content:"";position:absolute;left:34px;right:34px;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.fs-grab{display:none}
+.fs-h{padding:0 14px 16px}
+.fs-h small{display:block;font:700 10px var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+.fs-h b{display:block;font:500 30px/1.1 var(--serif);color:#fff;margin-top:4px}
+.fs-o{position:relative;display:flex;align-items:center;gap:14px;padding:10px 12px;margin:2px 0;border-radius:18px;border:1px solid transparent;cursor:pointer;animation:rise .55s var(--ease) both;animation-delay:calc(.05s + var(--i) * .06s);transition:background .25s,border-color .25s,transform .3s var(--ease)}
+.fs-o:hover,.fs-o:focus-visible{background:rgba(212,176,106,.1);border-color:rgba(212,176,106,.4);outline:none;transform:translateX(3px)}
+.fs-o[aria-selected=true]{background:linear-gradient(90deg,rgba(212,176,106,.22),rgba(212,176,106,.05));border-color:var(--gold)}
+.fs-i{width:68px;height:68px;border-radius:16px;overflow:hidden;flex:none;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,var(--navy-3),var(--navy) 70%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.fs-i picture,.fs-i img{display:block;width:100%;height:100%;object-fit:cover}
+.fs-i svg{width:28px;height:28px;color:var(--gold)}
+.fs-t{min-width:0;flex:1}
+.fs-t b{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font:500 23px/1.1 var(--serif);color:#fff}
+.fs-t b i{font:700 9.5px var(--sans);letter-spacing:.16em;text-transform:uppercase;font-style:normal;color:var(--night);background:var(--gold);padding:4px 9px;border-radius:999px}
+.fs-t em{font:400 13px/1.45 var(--sans);font-style:normal;color:rgba(255,255,255,.68);margin-top:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fs-k{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;color:transparent;transition:all .3s var(--ease)}
+.fs-k svg{width:15px;height:15px}
+.fs-o[aria-selected=true] .fs-k{background:var(--gold);border-color:var(--gold);color:var(--night);box-shadow:0 8px 16px -6px rgba(212,176,106,.8)}
+@media(max-width:719px){
+  .fs{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:88dvh;border-radius:28px 28px 0 0;border-bottom:0;padding:10px 12px calc(14px + env(safe-area-inset-bottom));transform:translateY(40px);transform-origin:50% 100%}
+  .fs.on{transform:none}
+  .fs::before{left:24%;right:24%}
+  .fs-grab{display:block;width:44px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);margin:4px auto 16px}
+  .fs-i{width:60px;height:60px}.fs-t b{font-size:21px}
+}
 </style>
 </head>
 <body>
@@ -1165,6 +1199,7 @@ const DP = (() => {
     if (restore) btn.focus({ preventScroll: true });
   };
   const open = (p, stage) => {
+    if (typeof FS !== "undefined") FS.closeAll();
     if (cur) close(false);
     clearTimeout(timer);
     const btn = stage === "in" ? p.bi : p.bo, base = p.inp.value || p.out.value || today, d = new Date(base + "T12:00:00");
@@ -1243,9 +1278,101 @@ const DP = (() => {
   $("#rvGo").addEventListener("click", () => { const d = pending; dlg.close(); if (d) send(message(d)); });
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
-  return { ask: (i, stage) => { const p = pairs[i]; (stage === "in" ? p.bi : p.bo).scrollIntoView({ block: "center", behavior: "smooth" }); setTimeout(() => open(p, stage), 350); }, review };
+  return { closeAll: () => close(false), ask: (i, stage) => { const p = pairs[i]; (stage === "in" ? p.bi : p.bo).scrollIntoView({ block: "center", behavior: "smooth" }); setTimeout(() => open(p, stage), 350); }, review };
 })();
 
+
+/* ===== custom select pop-ups (branch, apartment) ===== */
+const FS = (() => {
+  const nat = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value");
+  const sheet = matchMedia("(max-width:719px)");
+  const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  const TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+  const thumb = f => `<picture><source type="image/webp" srcset="${IMG}${f}-sm.webp"><img src="${IMG}${f}-sm.jpg" alt="" width="68" height="68" loading="lazy" decoding="async"></picture>`;
+  const pinIc = svg(ICONS.pin), sparkIc = svg(ICONS.spark);
+  const metaBranch = v => { const b = CONFIG.branches.find(x => x.id === v) || CONFIG.branches[0];
+    return { t: b.name, s: b.landmark || "Photos and details coming soon", tag: b.town, img: b.photo ? thumb(b.photo) : pinIc, f: b.photo }; };
+  const metaApt = v => { const a = CONFIG.apartments.find(x => x.name === v);
+    return a ? { t: a.name, s: a.blurb, tag: `${a.beds} bed`, img: thumb(a.photo), f: a.photo } : { t: "Not sure yet", s: "No problem. We will help you pick the right size on WhatsApp.", tag: "", img: sparkIc, f: "" }; };
+
+  const panel = document.createElement("div");
+  panel.className = "fs"; panel.hidden = true; panel.setAttribute("role", "listbox");
+  const back = document.createElement("div"); back.className = "cal-back"; back.hidden = true;
+  document.body.append(back, panel);
+  let cur = null, timer = 0;
+
+  const make = (sel, meta, eyebrow, title) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "dbtn fsb"; b.setAttribute("aria-haspopup", "listbox"); b.setAttribute("aria-expanded", "false");
+    const paint = () => {
+      const m = meta(nat.get.call(sel)), lab = (sel.closest("label").firstChild.textContent || "").trim();
+      b.innerHTML = (m.f ? `<img class="th" src="${IMG}${m.f}-sm.jpg" alt="" width="30" height="30">` : `<span class="th ic">${m.img.includes("<svg") ? m.img : ""}</span>`) + `<span>${esc(m.t)}</span>` + CHEV;
+      b.setAttribute("aria-label", `${lab}: ${m.t}`);
+    };
+    Object.defineProperty(sel, "value", { configurable: true, get() { return nat.get.call(this); }, set(v) { nat.set.call(this, v); paint(); } });
+    sel.hidden = true; sel.tabIndex = -1; sel.setAttribute("aria-hidden", "true");
+    sel.before(b); paint();
+    b.addEventListener("click", () => cur && cur.b === b ? close(true) : open(sel, meta, eyebrow, title, b));
+    b.addEventListener("keydown", e => { if (e.key === "ArrowDown" && !cur) { e.preventDefault(); open(sel, meta, eyebrow, title, b); } });
+    return b;
+  };
+  const place = () => {
+    if (sheet.matches) { panel.style.left = panel.style.top = ""; return; }
+    const r = cur.b.closest("label").getBoundingClientRect(), w = panel.offsetWidth, h = panel.offsetHeight;
+    const left = Math.min(Math.max(12, r.left), innerWidth - w - 12) + scrollX;
+    const above = r.bottom + h + 24 > innerHeight && r.top > h + 24;
+    panel.style.left = left + "px"; panel.style.top = (above ? r.top - h - 12 : r.bottom + 12) + scrollY + "px";
+    panel.style.transformOrigin = `${Math.max(8, r.left + 40 - left + scrollX)}px ${above ? "100%" : "0"}`;
+  };
+  const close = restore => {
+    if (!cur) return; const { b } = cur; cur = null;
+    b.setAttribute("aria-expanded", "false");
+    panel.classList.remove("on"); back.classList.remove("on"); document.documentElement.classList.remove("cal-lock");
+    clearTimeout(timer); timer = setTimeout(() => { panel.hidden = true; back.hidden = true; }, 320);
+    if (restore) b.focus({ preventScroll: true });
+  };
+  const open = (sel, meta, eyebrow, title, b) => {
+    if (typeof DP !== "undefined" && DP.closeAll) DP.closeAll();
+    if (cur) close(false);
+    clearTimeout(timer);
+    cur = { sel, b }; const val = sel.value;
+    panel.innerHTML = `<div class="fs-grab"></div><div class="fs-h"><small>${esc(eyebrow)}</small><b>${esc(title)}</b></div>` +
+      [...sel.options].map((o, i) => { const m = meta(o.value);
+        return `<div class="fs-o" role="option" tabindex="-1" data-v="${esc(o.value)}" aria-selected="${o.value === val}" style="--i:${i}"><span class="fs-i">${m.img}</span><span class="fs-t"><b>${esc(m.t)}${m.tag ? `<i>${esc(m.tag)}</i>` : ""}</b><em>${esc(m.s)}</em></span><span class="fs-k">${TICK}</span></div>`; }).join("");
+    b.setAttribute("aria-expanded", "true");
+    panel.hidden = false; back.hidden = !sheet.matches; panel.scrollTop = 0;
+    place();
+    if (!sheet.matches) { const r = panel.getBoundingClientRect(); if (r.bottom > innerHeight - 12) scrollBy({ top: Math.min(r.bottom - innerHeight + 20, r.top - 80), behavior: "smooth" }); }
+    else document.documentElement.classList.add("cal-lock");
+    requestAnimationFrame(() => { panel.classList.add("on"); back.classList.add("on"); });
+    (panel.querySelector('[aria-selected="true"]') || panel.querySelector(".fs-o")).focus({ preventScroll: true });
+  };
+  const choose = o => {
+    const { sel } = cur, v = o.dataset.v;
+    sel.value = v; sel.dispatchEvent(new Event("input", { bubbles: true })); sel.dispatchEvent(new Event("change", { bubbles: true }));
+    panel.querySelectorAll(".fs-o").forEach(x => x.setAttribute("aria-selected", x === o));
+    setTimeout(() => close(true), 220);
+  };
+  panel.addEventListener("click", e => { const o = e.target.closest(".fs-o"); if (o) choose(o); });
+  panel.addEventListener("keydown", e => {
+    const items = [...panel.querySelectorAll(".fs-o")], i = items.indexOf(document.activeElement);
+    if (e.key === "Escape") { e.stopPropagation(); close(true); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); items[Math.min(items.length - 1, i + 1)].focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); items[Math.max(0, i - 1)].focus(); }
+    else if (e.key === "Home") { e.preventDefault(); items[0].focus(); }
+    else if (e.key === "End") { e.preventDefault(); items[items.length - 1].focus(); }
+    else if ((e.key === "Enter" || e.key === " ") && i > -1) { e.preventDefault(); choose(items[i]); }
+  });
+  panel.addEventListener("focusout", e => { if (cur && e.relatedTarget && !panel.contains(e.relatedTarget) && !e.relatedTarget.closest(".dbtn")) close(false); });
+  back.addEventListener("click", () => close(true));
+  document.addEventListener("pointerdown", e => { if (cur && !panel.contains(e.target) && !e.target.closest(".dbtn")) close(false); });
+  addEventListener("resize", () => { if (cur) close(false); });
+
+  make($("#qBranch"), metaBranch, "Where to stay", "Choose a branch");
+  make($("#fBranch"), metaBranch, "Where to stay", "Choose a branch");
+  make($("#fApt"), metaApt, "Your home", "Choose an apartment");
+  return { closeAll: () => close(false) };
+})();
 
 /* header turns solid on scroll */
 const hdr = $("#hdr");
